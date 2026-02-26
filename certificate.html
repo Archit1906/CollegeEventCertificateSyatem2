@@ -4,231 +4,630 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate Preview - EventSys</title>
+    <title>Premium Certificate - EventSys</title>
+
+    <!-- Fonts: Playfair Display for headings/names, Poppins for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Poppins:wght@400;500;600&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+
+    <!-- Canvas Confetti for load animation -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
+        :root {
+            --primary-dark: #1e1b4b;
+            /* Deep Indigo */
+            --primary-light: #4338ca;
+            /* Royal Blue/Purple */
+            --gold-solid: #d4af37;
+            --gold-light: #fbe6a2;
+            --gold-dark: #aa8222;
+            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+
+            --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 50%, #f3e8ff 100%);
+            --text-main: #334155;
+
+            --font-serif: 'Playfair Display', serif;
+            --font-cinzel: 'Cinzel', serif;
+            --font-sans: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            background: var(--bg-gradient);
+            font-family: var(--font-sans);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            color: var(--text-main);
             padding: 2rem;
-            background: var(--bg-gradient-light);
-            min-height: 100vh;
+            position: relative;
         }
 
-        [data-theme='dark'] body {
-            background: var(--bg-gradient-dark);
+        /* Ambient Background Glow */
+        .ambient-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 70vh;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .cert-controls {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+        /* Action Bar (Top) */
+        .cert-action-bar {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
+            display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 2rem;
+            z-index: 10;
+            animation: slideDown 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(-20px);
         }
 
-        /* Certificate Layout */
-        .certificate-wrapper {
-            background: #ffffff;
-            color: #1a1a1a;
-            /* Enforce dark text always inside cert */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 999px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            color: var(--primary-dark);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-back:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-print {
+            background: var(--primary-dark);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(30, 27, 75, 0.3);
+        }
+
+        .btn-print:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 56, 202, 0.4);
+        }
+
+        /* Certificate Container */
+        .cert-container {
+            position: relative;
             width: 100%;
-            max-width: 900px;
+            max-width: 1100px;
+            /* ~85% width constraint on large screens */
             aspect-ratio: 1.414 / 1;
-            /* A4 Landscape roughly */
+            /* A4 Landscape Print Ratio */
+            background: #ffffff;
             padding: 2.5rem;
-            position: relative;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-radius: 4px;
-            /* subtle print border */
+            box-shadow: 0 25px 50px -12px rgba(30, 27, 75, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.5);
+            z-index: 10;
+            animation: zoomInFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: box-shadow 0.4s ease;
         }
 
-        .certificate {
-            border: 8px solid #4f46e5;
-            padding: 10px;
-            height: 100%;
-            position: relative;
+        .cert-container:hover {
+            box-shadow: 0 30px 60px -10px rgba(30, 27, 75, 0.35), 0 0 30px rgba(212, 175, 55, 0.15);
         }
 
-        .certificate-inner {
-            border: 2px solid #e5e7eb;
+        /* Double Border & Ornament System */
+        .cert-border-outer {
+            position: relative;
+            width: 100%;
             height: 100%;
+            border: 4px solid var(--primary-dark);
+            padding: 8px;
+        }
+
+        .cert-border-outer::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid var(--gold-solid);
+            pointer-events: none;
+        }
+
+        .cert-border-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--gold-dark);
+            background: #fafafa;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 3rem;
-            background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g fill="%234f46e5" fill-opacity="0.03"><path d="M50 0L100 50L50 100L0 50Z"/></g></svg>') repeat;
+            padding: 3rem 4rem;
+            overflow: hidden;
         }
 
+        /* Shimmer Effect on Border */
+        .cert-border-inner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transform: skewX(-20deg);
+            animation: sweepShimmer 6s infinite 2s;
+            pointer-events: none;
+        }
+
+        /* Watermark Logo */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 400px;
+            color: var(--primary-light);
+            opacity: 0.04;
+            pointer-events: none;
+        }
+
+        /* Content Styling */
         .cert-logo {
-            font-size: 4rem;
-            color: #4f46e5;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            color: var(--gold-solid);
+            margin-bottom: 0.5rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cert-header {
+            font-family: var(--font-cinzel);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            border-bottom: 1px solid var(--gold-light);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
         }
 
         .cert-title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .cert-body-text {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Student Name Animation */
+        .cert-name {
+            font-family: var(--font-serif);
             font-size: 3.5rem;
             font-weight: 700;
-            color: #1e1b4b;
-            margin-bottom: 2rem;
-            letter-spacing: 2px;
-        }
-
-        .cert-text {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.2rem;
-            color: #4b5563;
-            margin-bottom: 1rem;
-        }
-
-        .cert-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
             font-style: italic;
-            color: #4f46e5;
+            color: var(--primary-light);
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 0.5rem;
+            position: relative;
             display: inline-block;
-            min-width: 400px;
+            padding: 0 2rem 0.5rem 2rem;
+            opacity: 0;
+            animation: fadeNameIn 1s ease 0.8s forwards;
+        }
+
+        .cert-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gold-solid);
+            animation: expandLine 1s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
         }
 
         .cert-event {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin: 1rem 0 3rem 0;
+            font-family: var(--font-cinzel);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 1.5rem 0;
+            letter-spacing: 1px;
         }
 
-        .cert-signatures {
+        /* Signatures */
+        .signatures-wrap {
             display: flex;
             justify-content: space-between;
+            align-items: flex-end;
             width: 100%;
             margin-top: auto;
-            padding: 0 4rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
         }
 
-        .signature-block {
+        .sig-block {
             text-align: center;
+            width: 220px;
         }
 
-        .signature-line {
-            width: 200px;
+        .sig-img {
+            width: 140px;
+            height: auto;
+            margin-bottom: -10px;
+            opacity: 0.9;
+        }
+
+        .sig-line {
+            width: 100%;
             height: 1px;
-            background: #111827;
+            background: #94a3b8;
             margin-bottom: 0.5rem;
         }
 
-        .signature-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            color: #6b7280;
-            font-weight: 500;
+        .sig-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Print Styles */
+        /* Bottom Decorative Badge */
+        .medal-badge {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-size: 2rem;
+            z-index: 20;
+        }
+
+        .medal-badge::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            border: 1px solid var(--gold-solid);
+            animation: pulseGlow 2s infinite;
+            pointer-events: none;
+        }
+
+        /* Keyframes */
+        @keyframes slideDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomInFade {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeNameIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes expandLine {
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes sweepShimmer {
+            0% {
+                left: -100%;
+            }
+
+            20% {
+                left: 200%;
+            }
+
+            100% {
+                left: 200%;
+            }
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+            }
+        }
+
+        /* Print Optimization to A4 */
         @media print {
-            body {
-                background: none;
-                padding: 0;
-                display: block;
-            }
-
-            .cert-controls {
-                display: none;
-            }
-
-            .certificate-wrapper {
-                box-shadow: none;
-                max-width: none;
-                margin: 0;
-                padding: 0;
-            }
-
             @page {
                 size: A4 landscape;
                 margin: 0;
             }
+
+            body {
+                background: #fff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: block;
+            }
+
+            .ambient-glow,
+            .cert-action-bar {
+                display: none !important;
+            }
+
+            .cert-container {
+                box-shadow: none !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                animation: none !important;
+                transform: scale(1) !important;
+                opacity: 1 !important;
+                page-break-after: avoid;
+                padding: 10mm;
+                /* standard print margin internal */
+            }
+
+            .cert-name::after {
+                width: 100%;
+            }
+
+            /* ensure line shows in print */
+            .cert-name {
+                opacity: 1;
+            }
+
+            .cert-border-inner::after {
+                display: none;
+            }
+
+            /* Ensure colors print correctly and badges position inside perfectly */
+            .medal-badge {
+                bottom: 20px;
+                box-shadow: none;
+            }
+
+            .medal-badge::after {
+                display: none;
+            }
+
+            .signatures-wrap {
+                padding-bottom: 20px;
+            }
+
+            /* Force background graphics to print in Webkit browsers */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        /* Corner Ornaments using SVG for sharpness */
+        .corner-ornament {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            pointer-events: none;
+        }
+
+        .corner-tl {
+            top: 10px;
+            left: 10px;
+        }
+
+        .corner-tr {
+            top: 10px;
+            right: 10px;
+            transform: scaleX(-1);
+        }
+
+        .corner-bl {
+            bottom: 10px;
+            left: 10px;
+            transform: scaleY(-1);
+        }
+
+        .corner-br {
+            bottom: 10px;
+            right: 10px;
+            transform: scale(-1, -1);
         }
     </style>
+
 </head>
 
 <body>
 
-    <div class="cert-controls">
-        <a href="student-dashboard.html" class="btn btn-outline glass" style="background: var(--card-bg);"><i
-                class="fa-solid fa-arrow-left" style="margin-right: 0.5rem;"></i> Back to Dashboard</a>
-        <div>
-            <button class="theme-toggle" aria-label="Toggle Dark Mode"
-                style="background: var(--card-bg); margin-right: 1rem;">
-                <i class="fa-solid fa-moon"></i>
-            </button>
-            <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"
-                    style="margin-right: 0.5rem;"></i> Print / Save PDF</button>
-        </div>
+    <div class="ambient-glow"></div>
+
+    <!-- Action Bar -->
+    <div class="cert-action-bar">
+        <a href="student-dashboard.html" class="btn-action btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <button class="btn-action btn-print" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> Print Official Certificate
+        </button>
     </div>
 
-    <div class="certificate-wrapper fade-in">
-        <div class="certificate">
-            <div class="certificate-inner">
+    <!-- Certificate -->
+    <div class="cert-container">
+        <div class="cert-border-outer">
+            <div class="cert-border-inner">
+
+                <!-- Subtle Academic Watermark -->
+                <i class="fa-solid fa-building-columns watermark"></i>
+
+                <!-- Corner Ornaments (CSS inline SVG) -->
+                <svg class="corner-ornament corner-tl" viewBox="0 0 100 100" fill="none" stroke="var(--gold-solid)"
+                    stroke-width="2">
+                    <path d="M0 20 L20 0 M0 40 L40 0 M0 60 L60 0 M0 80 L80 0 M0 100 L100 0" />
+                </svg>
+                <svg class="corner-ornament corner-tr" viewBox="0 0 100 100" fill="none" stroke="var(--gold-solid)"
+                    stroke-width="2">
+                    <path d="M0 20 L20 0 M0 40 L40 0 M0 60 L60 0 M0 80 L80 0 M0 100 L100 0" />
+                </svg>
+                <svg class="corner-ornament corner-bl" viewBox="0 0 100 100" fill="none" stroke="var(--gold-solid)"
+                    stroke-width="2">
+                    <path d="M0 20 L20 0 M0 40 L40 0 M0 60 L60 0 M0 80 L80 0 M0 100 L100 0" />
+                </svg>
+                <svg class="corner-ornament corner-br" viewBox="0 0 100 100" fill="none" stroke="var(--gold-solid)"
+                    stroke-width="2">
+                    <path d="M0 20 L20 0 M0 40 L40 0 M0 60 L60 0 M0 80 L80 0 M0 100 L100 0" />
+                </svg>
 
                 <i class="fa-solid fa-award cert-logo"></i>
+                <div class="cert-header">EventSys Academic Network</div>
+
                 <h1 class="cert-title">Certificate of Participation</h1>
 
-                <p class="cert-text">This is proudly presented to</p>
+                <p class="cert-body-text">This is proudly presented to</p>
 
-                <h2 class="cert-name">John Doe</h2>
+                <div class="cert-name">Alex Carter</div>
 
-                <p class="cert-text">For outstanding participation and successful completion of the</p>
+                <p class="cert-body-text" style="max-width: 650px; line-height: 1.6;">
+                    For outstanding dedication, active engagement, and successful completion of all technical
+                    requirements in the
+                </p>
 
-                <h3 class="cert-event">National Tech Symposium 2026</h3>
+                <h2 class="cert-event">National Tech Symposium 2026</h2>
 
-                <p class="cert-text" style="font-size: 1rem; margin-bottom: 4rem;">Held on <strong>October 15,
-                        2026</strong> at the Main Auditorium, organized by the CSE Department.</p>
+                <p class="cert-body-text" style="font-size: 0.95rem;">
+                    Conducted on <strong>October 15, 2026</strong> at the Main Auditorium, organized by the Department
+                    of Computer Science.
+                </p>
 
-                <div class="cert-signatures">
-                    <div class="signature-block">
-                        <!-- Simulated Signature -->
+                <!-- Symmetrical Signatures Layout -->
+                <div class="signatures-wrap">
+
+                    <div class="sig-block">
+                        <!-- Simulated elegant cursive signature -->
                         <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Signature_of_John_Hancock.svg"
-                            alt="Signature"
-                            style="height: 40px; margin-bottom: 10px; opacity: 0.8; filter: grayscale(100%);">
-                        <div class="signature-line"></div>
-                        <div class="signature-title">Head of Department</div>
+                            alt="HOD Signature" class="sig-img"
+                            style="filter: opacity(70%) sepia(100%) hue-rotate(200deg) saturate(300%) contrast(150%);">
+                        <div class="sig-line"></div>
+                        <div class="sig-title">Head of Department</div>
                     </div>
 
-                    <!-- Badge -->
-                    <div
-                        style="width: 80px; height: 80px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 6px #f59e0b; color: #fff; font-size: 2rem;">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-
-                    <div class="signature-block">
+                    <div class="sig-block">
+                        <!-- Simulated elegant cursive signature -->
                         <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/George_Washington_signature.svg"
-                            alt="Signature"
-                            style="height: 40px; margin-bottom: 10px; opacity: 0.8; filter: grayscale(100%);">
-                        <div class="signature-line"></div>
-                        <div class="signature-title">College Principal</div>
+                            alt="Principal Signature" class="sig-img"
+                            style="filter: opacity(70%) sepia(100%) hue-rotate(200deg) saturate(300%) contrast(150%);">
+                        <div class="sig-line"></div>
+                        <div class="sig-title">College Principal</div>
                     </div>
+
                 </div>
 
             </div>
         </div>
+
+        <!-- Floating Gold Badge Overlapping the bottom border -->
+        <div class="medal-badge">
+            <i class="fa-solid fa-star"></i>
+        </div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Fire elegant gold/blue confetti when window loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const duration = 2000;
+                const animationEnd = Date.now() + duration;
+                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 50 };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                const interval = setInterval(function () {
+                    const timeLeft = animationEnd - Date.now();
+
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+
+                    const particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#d4af37', '#1e1b4b', '#4338ca'] }));
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#d4af37', '#1e1b4b', '#4338ca'] }));
+                }, 250);
+            }, 500); // 0.5s delay to let the certificate slide up first
+        });
+    </script>
 </body>
 
 </html>
