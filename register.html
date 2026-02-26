@@ -4,164 +4,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - College Event System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Register - EventSys</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .registration-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar glass-panel">
+    <!-- Background Blobs -->
+    <div class="blob-bg">
+        <div class="blob blob-1" style="background: var(--secondary-color); opacity: 0.15"></div>
+    </div>
+
+    <nav class="navbar" id="navbar">
         <div class="nav-brand">
-            <i class="fa-solid fa-graduation-cap"></i>
-            EventSys
+            <div
+                style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <span class="text-gradient">EventSys</span>
         </div>
         <ul class="nav-links">
             <li><a href="index.html" class="nav-link">Home</a></li>
-            <li><a href="events.html" class="nav-link">Events</a></li>
-            <li><a href="register.html" class="nav-link">Register</a></li>
+            <li><a href="events.html" class="nav-link">Explore</a></li>
             <li><a href="participate.html" class="nav-link">Participate</a></li>
+            <li><a href="student-dashboard.html" class="nav-link">Dashboard</a></li>
             <li><a href="admin.html" class="nav-link">Admin</a></li>
         </ul>
         <div class="nav-actions">
-            <button class="theme-toggle" aria-label="Toggle Dark Mode">
-                <i class="fa-solid fa-moon"></i>
-            </button>
-            <a href="login.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Login</a>
-            <button class="hamburger" aria-label="Menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+            <button class="theme-toggle" aria-label="Toggle Dark Mode"><i class="fa-solid fa-moon"></i></button>
+            <button class="hamburger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content" style="display: flex; align-items: center; justify-content: center; padding: 4rem 5%;">
 
-        <section class="fade-in registration-container">
-            <div class="section-header">
-                <h1 class="section-title">Student Registration</h1>
-                <p class="section-subtitle">Create your academic profile to participate in college events.</p>
+        <div class="glass"
+            style="max-width: 800px; width: 100%; padding: 4rem 3rem; border-radius: 2rem; position: relative; overflow: visible;"
+            data-aos="flip-up">
+
+            <!-- Decorative icon element overlapping top border -->
+            <div
+                style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; box-shadow: 0 10px 20px rgba(99,102,241,0.4); z-index: 2;">
+                <i class="fa-solid fa-user-plus"></i>
             </div>
 
-            <div class="glass animate-element" style="padding: 3rem; border-radius: var(--radius-xl);">
-                <form id="registrationForm" onsubmit="handleRegistration(event)">
-
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                        <!-- Register Number -->
-                        <div class="form-group">
-                            <label class="form-label" for="regNumber">Register Number *</label>
-                            <input type="text" id="regNumber" class="form-control" required
-                                placeholder="e.g., 2026CSE101">
-                        </div>
-
-                        <!-- Student Name -->
-                        <div class="form-group">
-                            <label class="form-label" for="studentName">Student Name *</label>
-                            <input type="text" id="studentName" class="form-control" required placeholder="John Doe">
-                        </div>
-
-                        <!-- Email -->
-                        <div class="form-group">
-                            <label class="form-label" for="email">Email Address *</label>
-                            <input type="email" id="email" class="form-control" required placeholder="john@example.com">
-                        </div>
-
-                        <!-- Phone Number -->
-                        <div class="form-group">
-                            <label class="form-label" for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" class="form-control" required placeholder="+1 234 567 8900">
-                        </div>
-
-                        <!-- Department -->
-                        <div class="form-group">
-                            <label class="form-label" for="department">Department *</label>
-                            <select id="department" class="form-control" required>
-                                <option value="">Select Department</option>
-                                <option value="CSE">Computer Science & Engineering</option>
-                                <option value="IT">Information Technology</option>
-                                <option value="ECE">Electronics & Communication</option>
-                            </select>
-                        </div>
-
-                        <!-- Year -->
-                        <div class="form-group">
-                            <label class="form-label" for="year">Year of Study *</label>
-                            <select id="year" class="form-control" required>
-                                <option value="">Select Year</option>
-                                <option value="1">1st Year</option>
-                                <option value="2">2nd Year</option>
-                                <option value="3">3rd Year</option>
-                                <option value="4">4th Year</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="checkbox" required
-                                style="width: 1rem; height: 1rem; accent-color: var(--primary-color);">
-                            <span class="text-secondary" style="font-size: 0.9rem;">I agree to the college event terms
-                                and conditions</span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg"
-                        style="width: 100%; margin-top: 1rem; font-size: 1.1rem;">
-                        Submit Registration <i class="fa-solid fa-arrow-right" style="margin-left: 0.5rem;"></i>
-                    </button>
-                </form>
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h1 class="section-title text-gradient" style="font-size: 2.5rem;">Join the Network</h1>
+                <p class="section-subtitle">Create your academic profile to track XP and participate in college events.
+                </p>
             </div>
-        </section>
+
+            <form id="registrationForm" onsubmit="handleRegistration(event)">
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="regNumber">Register Number</label>
+                        <input type="text" id="regNumber" class="form-control" required placeholder="Ex. 2026CSE101"
+                            style="border-radius: var(--radius-pill);">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="studentName">Student Name</label>
+                        <input type="text" id="studentName" class="form-control" required placeholder="Full Name"
+                            style="border-radius: var(--radius-pill);">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" required placeholder="student@college.edu"
+                            style="border-radius: var(--radius-pill);">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="department">Department</label>
+                        <select id="department" class="form-control" required
+                            style="border-radius: var(--radius-pill);">
+                            <option value="">Select Department</option>
+                            <option value="CSE">Computer Science</option>
+                            <option value="IT">Information Technology</option>
+                            <option value="ECE">Electronics</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg"
+                    style="width: 100%; margin-top: 2rem; font-size: 1.2rem; padding: 1rem;">
+                    Create Profile <i class="fa-solid fa-rocket" style="margin-left: 0.8rem;"></i>
+                </button>
+
+            </form>
+        </div>
 
     </main>
 
     <!-- Success Modal -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-content glass">
-            <i class="fa-solid fa-circle-check modal-icon"></i>
-            <h2>Registration Successful!</h2>
-            <p class="text-secondary" style="margin-bottom: 2rem;">Your student profile has been created. You can now
-                participate in events and download certificates.</p>
+            <div class="modal-icon-bg"><i class="fa-solid fa-check"></i></div>
+            <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Profile Created!</h2>
+            <p class="text-secondary" style="margin-bottom: 2rem;">Welcome aboard! Let's get you signed up for your
+                first event.</p>
             <div style="display: flex; gap: 1rem; justify-content: center;">
-                <a href="participate.html" class="btn btn-primary">Participate in Events</a>
-                <button onclick="closeModal('successModal')" class="btn btn-outline">Close</button>
+                <a href="participate.html" class="btn btn-primary">Start Participating</a>
+                <button onclick="closeModal('successModal')" class="btn btn-outline"
+                    style="background: transparent;">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-col">
-                <h3><i class="fa-solid fa-graduation-cap"></i> EventSys</h3>
-                <p class="text-secondary">Elevating academic experiences through automated event management.</p>
-            </div>
-            <div class="footer-col">
-                <h3>Contact Info</h3>
-                <ul style="color: var(--text-secondary); line-height: 2;">
-                    <li><i class="fa-solid fa-envelope"></i> contact@college.edu</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            &copy; 2026 College Event System.
-        </div>
-    </footer>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="app.js"></script>
     <script>
         function handleRegistration(e) {
             e.preventDefault();
-            // Simulate API call and success popup
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';

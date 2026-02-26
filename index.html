@@ -1,34 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>College Event Participation & Certificate System</title>
-  <meta name="description" content="Manage registrations, participation, and certificates efficiently for college events.">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description"
+    content="Manage registrations, participation, and certificates efficiently for college events.">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
+  <!-- Floating Background Blobs -->
+  <div class="blob-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
   <!-- Navbar -->
-  <nav class="navbar glass-panel">
+  <nav class="navbar" id="navbar">
     <div class="nav-brand">
-      <i class="fa-solid fa-graduation-cap"></i>
-      EventSys
+      <div
+        style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+      <span class="text-gradient">EventSys</span>
     </div>
     <ul class="nav-links">
-      <li><a href="index.html" class="nav-link">Home</a></li>
-      <li><a href="events.html" class="nav-link">Events</a></li>
-      <li><a href="register.html" class="nav-link">Register</a></li>
+      <li><a href="index.html" class="nav-link active">Home</a></li>
+      <li><a href="events.html" class="nav-link">Explore</a></li>
       <li><a href="participate.html" class="nav-link">Participate</a></li>
+      <li><a href="student-dashboard.html" class="nav-link">Dashboard</a></li>
       <li><a href="admin.html" class="nav-link">Admin</a></li>
     </ul>
     <div class="nav-actions">
       <button class="theme-toggle" aria-label="Toggle Dark Mode">
         <i class="fa-solid fa-moon"></i>
       </button>
-      <a href="login.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Login</a>
+      <a href="login.html" class="btn btn-primary" style="padding: 0.6rem 1.5rem;">Access Portal</a>
       <button class="hamburger" aria-label="Menu">
         <i class="fa-solid fa-bars"></i>
       </button>
@@ -36,109 +56,331 @@
   </nav>
 
   <!-- Main Content -->
-  <main class="main-content">
-    
+  <main class="main-content" style="padding-top: 0;">
+
     <!-- Hero Section -->
-    <section class="hero glass fade-in" style="margin: 2rem 5%; text-align: center; padding: 6rem 2rem;">
-      <h1 class="section-title" style="font-size: 3.5rem;">College Event Participation & Certificate System</h1>
-      <p class="section-subtitle" style="font-size: 1.25rem; max-width: 800px; margin: 0 auto 3rem auto;">
-        Manage registrations, participation, and certificates efficiently. Enhance student engagement with a seamless academic event platform.
-      </p>
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="register.html" class="btn btn-primary btn-lg">Register for Event</a>
-        <a href="events.html" class="btn btn-outline btn-lg">View Events</a>
-        <a href="#about" class="btn btn-outline btn-lg">About the System</a>
+    <section class="hero"
+      style="min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px; position: relative;">
+      <!-- Particles Background -->
+      <div id="tsparticles"></div>
+
+      <div style="max-width: 900px; z-index: 1;" data-aos="zoom-in" data-aos-duration="1000">
+        <div class="badge badge-tech mb-4" style="font-size: 0.9rem; padding: 0.5rem 1.2rem;"><i
+            class="fa-solid fa-sparkles"></i> The Future of College Events</div>
+        <h1 class="section-title text-gradient" style="font-size: 4.5rem; line-height: 1.1; margin-bottom: 2rem;">
+          Elevate Your Academic Experience
+        </h1>
+        <p class="section-subtitle" style="font-size: 1.5rem; margin-bottom: 3rem; color: var(--text-primary);">
+          Seamlessly manage <span id="typing-text"
+            data-words='["registrations.", "participation.", "certificates.", "hackathons.", "symposia."]'
+            class="text-primary" style="font-weight: 600;"></span><span class="cursor"
+            style="animation: blink 1s infinite alternate; border-right: 3px solid var(--primary-color); display: inline-block; height: 1.2em; vertical-align: bottom;"></span>
+        </p>
+        <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+          <a href="events.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2.5rem;"><i
+              class="fa-solid fa-rocket" style="margin-right: 0.8rem;"></i> Explore Events</a>
+          <a href="register.html" class="btn btn-outline" style="font-size: 1.2rem; padding: 1rem 2.5rem;"><i
+              class="fa-solid fa-user-plus" style="margin-right: 0.8rem;"></i> Register Now</a>
+        </div>
       </div>
+
+      <a href="#why-participate" class="scroll-indicator">
+        <i class="fa-solid fa-chevron-down"></i>
+      </a>
     </section>
 
-    <!-- About / Features Section -->
-    <section id="about" class="animate-element">
-      <div class="section-header">
-        <h2 class="section-title">System Features</h2>
-        <p class="section-subtitle">Everything you need to organize and participate in college events.</p>
+    <!-- Why Participate Section (Student Engagement) -->
+    <section id="why-participate">
+      <div class="section-header" data-aos="fade-up">
+        <div class="badge badge-workshop mb-2">Benefits</div>
+        <h2 class="section-title">Why Participate?</h2>
+        <p class="section-subtitle">Unlock your true potential outside the classroom with our vibrant event ecosystem.
+        </p>
       </div>
       <div class="grid-cards">
-        
-        <div class="card glass">
-          <i class="fa-solid fa-user-plus card-icon"></i>
-          <h3>Student Registration</h3>
-          <p class="text-secondary">Seamless onboarding process for students to register with their academic details safely.</p>
-        </div>
-        
-        <div class="card glass">
-          <i class="fa-solid fa-calendar-check card-icon"></i>
-          <h3>Event Management</h3>
-          <p class="text-secondary">Organize symposia, workshops, and seminars with clear schedules and venues.</p>
+
+        <div class="interactive-card glass" data-aos="fade-up" data-aos-delay="100">
+          <div class="card-icon-wrapper"><i class="fa-solid fa-brain"></i></div>
+          <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Build Practical Skills</h3>
+          <p class="text-secondary">Gain hands-on experience through technical workshops, hackathons, and coding
+            challenges.</p>
         </div>
 
-        <div class="card glass">
-          <i class="fa-solid fa-clipboard-user card-icon"></i>
-          <h3>Participation Tracking</h3>
-          <p class="text-secondary">Track student attendance dynamically. Select multiple events at once.</p>
+        <div class="interactive-card glass" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-icon-wrapper"><i class="fa-solid fa-file-certificate"></i></div>
+          <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Earn Verified Certificates</h3>
+          <p class="text-secondary">Receive instantly generated, digitally verified certificates directly to your
+            student dashboard.</p>
         </div>
 
-        <div class="card glass">
-          <i class="fa-solid fa-certificate card-icon"></i>
-          <h3>Certificate Issuance</h3>
-          <p class="text-secondary">Automated digital certificate generation upon successful event completion.</p>
+        <div class="interactive-card glass" data-aos="fade-up" data-aos-delay="300">
+          <div class="card-icon-wrapper"><i class="fa-solid fa-people-arrows"></i></div>
+          <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Network with Peers</h3>
+          <p class="text-secondary">Connect with like-minded students, industry professionals, and brilliant mentors.
+          </p>
+        </div>
+
+        <div class="interactive-card glass" data-aos="fade-up" data-aos-delay="400">
+          <div class="card-icon-wrapper"><i class="fa-solid fa-trophy"></i></div>
+          <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Gain Global Recognition</h3>
+          <p class="text-secondary">Climb the leaderboard, unlock exclusive badges, and build a stellar academic
+            portfolio.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Interactive Statistics Section -->
+    <section data-aos="fade-up">
+      <div class="glass"
+        style="padding: 4rem 2rem; border-radius: 2rem; background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1)); border: 1px solid var(--primary-color);">
+        <div class="grid-cards" style="text-align: center; gap: 2rem;">
+
+          <div data-aos="zoom-in" data-aos-delay="100">
+            <h2 class="counter text-gradient" data-target="120" data-suffix="+"
+              style="font-size: 4rem; font-weight: 800; line-height: 1;">0</h2>
+            <p style="font-size: 1.2rem; font-weight: 600; margin-top: 1rem;">Events Conducted</p>
+          </div>
+
+          <div data-aos="zoom-in" data-aos-delay="200">
+            <h2 class="counter text-gradient" data-target="2500" data-suffix="+"
+              style="font-size: 4rem; font-weight: 800; line-height: 1;">0</h2>
+            <p style="font-size: 1.2rem; font-weight: 600; margin-top: 1rem;">Students Participated</p>
+          </div>
+
+          <div data-aos="zoom-in" data-aos-delay="300">
+            <h2 class="counter text-gradient" data-target="1800" data-suffix="+"
+              style="font-size: 4rem; font-weight: 800; line-height: 1;">0</h2>
+            <p style="font-size: 1.2rem; font-weight: 600; margin-top: 1rem;">Certificates Issued</p>
+          </div>
+
+          <div data-aos="zoom-in" data-aos-delay="400">
+            <h2 class="counter text-gradient" data-target="24" data-suffix="+"
+              style="font-size: 4rem; font-weight: 800; line-height: 1;">0</h2>
+            <p style="font-size: 1.2rem; font-weight: 600; margin-top: 1rem;">Departments Involved</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Student Testimonials (Carousel) -->
+    <section>
+      <div class="section-header" data-aos="fade-up">
+        <div class="badge badge-culture mb-2">Success Stories</div>
+        <h2 class="section-title">Wall of Fame</h2>
+        <p class="section-subtitle">Hear what our top performers have to say about their experience.</p>
+      </div>
+
+      <div class="testimonials-container" data-aos="fade-left">
+
+        <!-- Card 1 -->
+        <div class="glass testimonial-card">
+          <i class="fa-solid fa-quote-left"></i>
+          <div class="stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+              class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p style="font-size: 1.1rem; margin-bottom: 2rem; font-style: italic;">"The cybersecurity hackathon completely
+            changed my career trajectory. The platform made registering and getting my digital certificate incredibly
+            smooth!"</p>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff"
+              style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary-color);">
+            <div>
+              <h4 style="margin: 0;">Alex Carter</h4>
+              <span class="text-secondary" style="font-size: 0.85rem;">Computer Science '27</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass testimonial-card">
+          <i class="fa-solid fa-quote-left"></i>
+          <div class="stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+              class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <p style="font-size: 1.1rem; margin-bottom: 2rem; font-style: italic;">"I love the gamified dashboard!
+            Collecting badges for attending workshops actually motivates me to participate in more events outside my
+            department."</p>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <img src="https://ui-avatars.com/api/?name=Sarah+Jen&background=ec4899&color=fff"
+              style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--accent-color);">
+            <div>
+              <h4 style="margin: 0;">Sarah Jen</h4>
+              <span class="text-secondary" style="font-size: 0.85rem;">Robotics & AI '26</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass testimonial-card">
+          <i class="fa-solid fa-quote-left"></i>
+          <div class="stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+              class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p style="font-size: 1.1rem; margin-bottom: 2rem; font-style: italic;">"As an organizer, issuing certificates
+            used to take weeks. Now, it literally happens the moment the event finishes. A massive leap for our college
+            ecosystem."</p>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <img src="https://ui-avatars.com/api/?name=Mike+Ross&background=10b981&color=fff"
+              style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #10b981;">
+            <div>
+              <h4 style="margin: 0;">Mike Ross</h4>
+              <span class="text-secondary" style="font-size: 0.85rem;">Event Coordinator, IT</span>
+            </div>
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- Statistics Section -->
-    <section class="animate-element" style="background: var(--card-bg); backdrop-filter: blur(16px); margin: 2rem 5%; border-radius: var(--radius-xl); border: 1px solid var(--card-border);">
-      <div class="grid-cards" style="text-align: center; padding: 2rem 0;">
-        
-        <div>
-          <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">150+</div>
-          <p style="font-size: 1.1rem; font-weight: 500;">Total Events Conducted</p>
+    <!-- Gamification Preview Section -->
+    <section>
+      <div class="glass"
+        style="padding: 4rem; text-align: center; border-radius: 2rem; position: relative; overflow: hidden;"
+        data-aos="zoom-in">
+        <div
+          style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent, rgba(168,85,247,0.3), transparent); animation: spin 10s linear infinite; z-index: -1;">
         </div>
-
-        <div>
-          <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">5,000+</div>
-          <p style="font-size: 1.1rem; font-weight: 500;">Total Students Participated</p>
+        <div class="badge badge-urgent mb-4"><i class="fa-solid fa-fire"></i> New Feature</div>
+        <h2 class="section-title">Level Up Your Profile</h2>
+        <p class="section-subtitle" style="margin-bottom: 3rem;">Earn experience points (XP), unlock rank badges, and
+          dominate the college leaderboard just by learning new things!</p>
+        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <div
+              style="width: 80px; height: 80px; background: linear-gradient(135deg, #fbbf24, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; box-shadow: 0 10px 20px rgba(217, 119, 6, 0.4);">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <strong style="font-size: 1.1rem;">Gold Participant</strong>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <div
+              style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; box-shadow: 0 10px 20px rgba(29, 78, 216, 0.4);">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <strong style="font-size: 1.1rem;">Tech Star</strong>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <div
+              style="width: 80px; height: 80px; background: linear-gradient(135deg, #ec4899, #be185d); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; box-shadow: 0 10px 20px rgba(190, 24, 93, 0.4);">
+              <i class="fa-solid fa-masks-theater"></i>
+            </div>
+            <strong style="font-size: 1.1rem;">Cultural Champ</strong>
+          </div>
         </div>
-
-        <div>
-          <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">12,000+</div>
-          <p style="font-size: 1.1rem; font-weight: 500;">Certificates Issued</p>
-        </div>
-
+        <a href="register.html" class="btn btn-primary mt-4" style="margin-top: 3rem;"><i class="fa-solid fa-gamepad"
+            style="margin-right: 0.5rem;"></i> Start Playing Now</a>
       </div>
     </section>
+
+    <style>
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
 
   </main>
 
   <!-- Footer -->
   <footer>
-    <div class="footer-content">
-      <div class="footer-col">
-        <h3><i class="fa-solid fa-graduation-cap"></i> EventSys</h3>
-        <p class="text-secondary">Elevating academic experiences through automated event management.</p>
+    <div
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem;">
+      <div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <div
+            style="width: 32px; height: 32px; background: var(--primary-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+            <i class="fa-solid fa-graduation-cap"></i></div> EventSys
+        </h3>
+        <p class="text-secondary" style="max-width: 300px;">The ultimate platform to power your college events, automate
+          certificates, and gamify student engagement.</p>
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+          <a href="#"
+            style="width: 40px; height: 40px; border-radius: 50%; background: var(--card-border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: background 0.3s;"><i
+              class="fa-brands fa-discord"></i></a>
+          <a href="#"
+            style="width: 40px; height: 40px; border-radius: 50%; background: var(--card-border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: background 0.3s;"><i
+              class="fa-brands fa-github"></i></a>
+          <a href="#"
+            style="width: 40px; height: 40px; border-radius: 50%; background: var(--card-border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: background 0.3s;"><i
+              class="fa-brands fa-twitter"></i></a>
+        </div>
       </div>
-      <div class="footer-col">
-        <h3>Department</h3>
-        <ul style="color: var(--text-secondary); line-height: 2;">
-          <li>Computer Science & Engineering</li>
-          <li>Information Technology</li>
-          <li>Electronics & Communication</li>
+      <div>
+        <h4 style="font-size: 1.2rem; margin-bottom: 1.5rem;">Quick Links</h4>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem;">
+          <li><a href="events.html" style="color: var(--text-secondary); transition: color 0.3s;">Explore Events</a>
+          </li>
+          <li><a href="register.html" style="color: var(--text-secondary); transition: color 0.3s;">Student
+              Registration</a></li>
+          <li><a href="admin.html" style="color: var(--text-secondary); transition: color 0.3s;">Admin Access</a></li>
+          <li><a href="#" style="color: var(--text-secondary); transition: color 0.3s;">Verify Certificates</a></li>
         </ul>
       </div>
-      <div class="footer-col">
-        <h3>Contact Info</h3>
-        <ul style="color: var(--text-secondary); line-height: 2;">
-          <li><i class="fa-solid fa-envelope"></i> contact@college.edu</li>
-          <li><i class="fa-solid fa-phone"></i> +1 234 567 8900</li>
-          <li><i class="fa-solid fa-location-dot"></i> 123 University Avenue, Campus Main Block</li>
+      <div>
+        <h4 style="font-size: 1.2rem; margin-bottom: 1.5rem;">Contact Us</h4>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem; color: var(--text-secondary);">
+          <li><i class="fa-solid fa-envelope" style="width: 24px; color: var(--primary-color);"></i> events@college.edu
+          </li>
+          <li><i class="fa-solid fa-phone" style="width: 24px; color: var(--primary-color);"></i> +1 (800) 123-4567</li>
+          <li><i class="fa-solid fa-location-dot" style="width: 24px; color: var(--primary-color);"></i> Student Block,
+            Sector 4, Silicon Valley</li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      &copy; 2026 College Event Participation & Certificate System. All Rights Reserved.
+    <div
+      style="text-align: center; padding-top: 2rem; border-top: 1px solid var(--card-border); color: var(--text-secondary); font-size: 0.95rem;">
+      <p>&copy; 2026 College Event Participation & Certificate System. Designed for scale.</p>
     </div>
   </footer>
 
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- tsParticles -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@2.11.0/tsparticles.engine.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-basic@2.11.0/tsparticles.basic.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/tsparticles-interaction-particles-links@2.11.0/tsparticles.interaction.particles.links.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-move-base@2.11.0/tsparticles.move.base.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-shape-circle@2.11.0/tsparticles.shape.circle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-updater-color@2.11.0/tsparticles.updater.color.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/tsparticles-updater-opacity@2.11.0/tsparticles.updater.opacity.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-updater-size@2.11.0/tsparticles.updater.size.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.bundle.min.js"></script>
+
   <script src="app.js"></script>
+  <script>
+    // Initialize required full tsparticles bundle for complex backgrounds
+    if (typeof tsParticles !== 'undefined') {
+      tsParticles.load("tsparticles", {
+        fpsLimit: 60,
+        particles: {
+          color: { value: ["#6366f1", "#a855f7", "#ec4899"] },
+          links: { enable: true, color: "#94a3b8", distance: 150, opacity: 0.2, width: 1 },
+          move: { enable: true, speed: 1.5, direction: "none", random: true, straight: false, outModes: "out" },
+          number: { density: { enable: true, area: 800 }, value: 40 },
+          opacity: { value: 0.3 },
+          shape: { type: "circle" },
+          size: { value: { min: 1, max: 3 } }
+        },
+        interactivity: {
+          events: {
+            onHover: { enable: true, mode: "grab" },
+            resize: true
+          },
+          modes: {
+            grab: { distance: 200, links: { opacity: 0.5 } }
+          }
+        }
+      });
+    }
+  </script>
 </body>
+
 </html>
