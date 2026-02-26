@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - College Event System</title>
+    <meta name="description" content="View and search upcoming college events.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar glass-panel">
+        <div class="nav-brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            EventSys
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="events.html" class="nav-link">Events</a></li>
+            <li><a href="register.html" class="nav-link">Register</a></li>
+            <li><a href="participate.html" class="nav-link">Participate</a></li>
+            <li><a href="admin.html" class="nav-link">Admin</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <a href="login.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Login</a>
+            <button class="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <section class="fade-in">
+            <div class="section-header">
+                <h1 class="section-title">Upcoming Events</h1>
+                <p class="section-subtitle">Discover and participate in seminars, workshops, and hackathons.</p>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="glass"
+                style="padding: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; align-items: flex-end;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                    <label class="form-label">Search Event</label>
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-search"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                        <input type="text" class="form-control" placeholder="Search by title..."
+                            style="padding-left: 2.5rem;">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                    <label class="form-label">Filter by Department</label>
+                    <select class="form-control">
+                        <option value="">All Departments</option>
+                        <option value="CSE">Computer Science</option>
+                        <option value="IT">Information Technology</option>
+                        <option value="ECE">Electronics</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                    <label class="form-label">Filter by Date</label>
+                    <input type="date" class="form-control">
+                </div>
+
+                <button class="btn btn-primary" style="height: 48px;"><i class="fa-solid fa-filter"
+                        style="margin-right: 0.5rem;"></i> Filter</button>
+            </div>
+
+            <!-- Events Grid -->
+            <div class="grid-cards">
+
+                <!-- Event Card 1 -->
+                <div class="card glass animate-element">
+                    <div
+                        style="background: var(--primary-color); height: 8px; border-radius: var(--radius-md) var(--radius-md) 0 0; margin: -2rem -2rem 1.5rem -2rem;">
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem;">National Tech Symposium</h3>
+                    <p style="color: var(--primary-color); font-weight: 500; font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="fa-regular fa-calendar"></i> Oct 15, 2026 | 09:00 AM
+                    </p>
+                    <div style="margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <p><i class="fa-solid fa-building-user" style="width: 20px;"></i> <strong>Organizer:</strong>
+                            Dept. of CSE</p>
+                        <p><i class="fa-solid fa-location-dot" style="width: 20px;"></i> <strong>Venue:</strong> Main
+                            Auditorium</p>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">
+                        A national level technical symposium featuring paper presentations, project expos, and coding
+                        challenges.
+                    </p>
+                    <a href="participate.html" class="btn btn-outline" style="width: 100%;">Participate</a>
+                </div>
+
+                <!-- Event Card 2 -->
+                <div class="card glass animate-element" style="transition-delay: 0.1s;">
+                    <div
+                        style="background: var(--secondary-color); height: 8px; border-radius: var(--radius-md) var(--radius-md) 0 0; margin: -2rem -2rem 1.5rem -2rem;">
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem;">AI & Machine Learning Workshop</h3>
+                    <p style="color: var(--primary-color); font-weight: 500; font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="fa-regular fa-calendar"></i> Oct 20, 2026 | 10:00 AM
+                    </p>
+                    <div style="margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <p><i class="fa-solid fa-building-user" style="width: 20px;"></i> <strong>Organizer:</strong>
+                            Dept. of IT</p>
+                        <p><i class="fa-solid fa-location-dot" style="width: 20px;"></i> <strong>Venue:</strong> Lab 4,
+                            Block IT</p>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">
+                        Hands-on workshop on building and deploying AI models using Python and TensorFlow.
+                    </p>
+                    <a href="participate.html" class="btn btn-outline" style="width: 100%;">Participate</a>
+                </div>
+
+                <!-- Event Card 3 -->
+                <div class="card glass animate-element" style="transition-delay: 0.2s;">
+                    <div
+                        style="background: #10b981; height: 8px; border-radius: var(--radius-md) var(--radius-md) 0 0; margin: -2rem -2rem 1.5rem -2rem;">
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem;">Robotics Seminar 2026</h3>
+                    <p style="color: var(--primary-color); font-weight: 500; font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="fa-regular fa-calendar"></i> Nov 05, 2026 | 02:00 PM
+                    </p>
+                    <div style="margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <p><i class="fa-solid fa-building-user" style="width: 20px;"></i> <strong>Organizer:</strong>
+                            Dept. of ECE</p>
+                        <p><i class="fa-solid fa-location-dot" style="width: 20px;"></i> <strong>Venue:</strong> Seminar
+                            Hall 1</p>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">
+                        Insightful seminar on the future of autonomous systems and drone technology by industry experts.
+                    </p>
+                    <a href="participate.html" class="btn btn-outline" style="width: 100%;">Participate</a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3><i class="fa-solid fa-graduation-cap"></i> EventSys</h3>
+                <p class="text-secondary">Elevating academic experiences through automated event management.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Department</h3>
+                <ul style="color: var(--text-secondary); line-height: 2;">
+                    <li>Computer Science & Engineering</li>
+                    <li>Information Technology</li>
+                    <li>Electronics & Communication</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <ul style="color: var(--text-secondary); line-height: 2;">
+                    <li><i class="fa-solid fa-envelope"></i> contact@college.edu</li>
+                    <li><i class="fa-solid fa-phone"></i> +1 234 567 8900</li>
+                    <li><i class="fa-solid fa-location-dot"></i> 123 University Avenue, Campus Main Block</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 College Event Participation & Certificate System. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

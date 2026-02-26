@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EventSys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .sidebar-nav {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Admin Content */
+        .admin-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .admin-topbar {
+            height: 70px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .dashboard-container {
+            padding: 2rem;
+        }
+
+        /* Data Tables */
+        .table-responsive {
+            overflow-x: auto;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--card-border);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.02);
+            white-space: nowrap;
+        }
+
+        [data-theme='dark'] .table th {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(79, 70, 229, 0.02);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="fa-solid fa-user-shield"></i> Admin Panel
+        </div>
+        <div class="sidebar-nav">
+            <a href="#" class="sidebar-link active" onclick="switchTab('overview')"><i
+                    class="fa-solid fa-chart-pie"></i> Overview</a>
+            <a href="#" class="sidebar-link" onclick="switchTab('students')"><i class="fa-solid fa-users"></i> All
+                Students</a>
+            <a href="#" class="sidebar-link" onclick="switchTab('events')"><i class="fa-solid fa-calendar-check"></i>
+                All Events</a>
+            <a href="#" class="sidebar-link" onclick="switchTab('registrations')"><i class="fa-solid fa-list-check"></i>
+                Registrations</a>
+            <a href="#" class="sidebar-link" onclick="switchTab('certificates')"><i class="fa-solid fa-certificate"></i>
+                Certificates</a>
+        </div>
+        <div style="padding: 1rem; border-top: 1px solid var(--card-border);">
+            <a href="index.html" class="sidebar-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout &
+                Exit</a>
+        </div>
+    </aside>
+
+    <!-- Admin Content -->
+    <main class="admin-content">
+
+        <!-- Topbar -->
+        <div class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="hamburger btn btn-outline"
+                    style="padding: 0.5rem; border: none; font-size: 1.25rem; display: none;"
+                    onclick="document.getElementById('sidebar').classList.toggle('open')">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h2 style="margin: 0; font-size: 1.25rem;" id="pageTitle">Dashboard Overview</h2>
+            </div>
+            <div>
+                <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=4f46e5&color=fff" alt="Admin"
+                    style="width: 36px; height: 36px; border-radius: 50%; vertical-align: middle; margin-left: 1rem;">
+            </div>
+        </div>
+
+        <!-- Dashboard Container -->
+        <div class="dashboard-container">
+
+            <!-- Overview Section -->
+            <section id="overview" class="tab-content fade-in" style="padding: 0;">
+                <div class="grid-cards" style="margin-bottom: 2rem;">
+                    <div class="card glass" style="padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p class="text-secondary" style="font-size: 0.9rem; font-weight: 500;">Total Students
+                                </p>
+                                <h3 style="font-size: 1.8rem; margin: 0;">5,124</h3>
+                            </div>
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 50%; background: rgba(79, 70, 229, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 1.5rem;">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card glass" style="padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p class="text-secondary" style="font-size: 0.9rem; font-weight: 500;">Active Events</p>
+                                <h3 style="font-size: 1.8rem; margin: 0;">42</h3>
+                            </div>
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; justify-content: center; color: #10b981; font-size: 1.5rem;">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card glass" style="padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p class="text-secondary" style="font-size: 0.9rem; font-weight: 500;">Certificates
+                                    Issued</p>
+                                <h3 style="font-size: 1.8rem; margin: 0;">12,890</h3>
+                            </div>
+                            <div
+                                style="width: 48px; height: 48px; border-radius: 50%; background: rgba(245, 158, 11, 0.1); display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 1.5rem;">
+                                <i class="fa-solid fa-certificate"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Students / Registrations Table (Shared Layout for Mockup) -->
+            <section id="students" class="tab-content fade-in" style="padding: 0;">
+                <div class="glass"
+                    style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                    <div style="position: relative; flex-grow: 1; max-width: 400px;">
+                        <i class="fa-solid fa-search"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                        <input type="text" class="form-control" placeholder="Search students by Name or Reg No..."
+                            style="padding-left: 2.5rem;">
+                    </div>
+                    <button class="btn btn-outline"><i class="fa-solid fa-filter" style="margin-right: 0.5rem;"></i>
+                        Filter</button>
+                </div>
+
+                <div class="table-responsive glass">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reg. Number</th>
+                                <th>Student Name</th>
+                                <th>Department</th>
+                                <th>Events Attended</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>2026CSE101</strong></td>
+                                <td>John Doe</td>
+                                <td>CSE</td>
+                                <td>5</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                                <td>
+                                    <button class="btn btn-primary"
+                                        style="padding: 0.25rem 0.75rem; font-size: 0.85rem;">View</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>2026IT056</strong></td>
+                                <td>Jane Smith</td>
+                                <td>IT</td>
+                                <td>3</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                                <td>
+                                    <button class="btn btn-primary"
+                                        style="padding: 0.25rem 0.75rem; font-size: 0.85rem;">View</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>2026ECE012</strong></td>
+                                <td>Michael Johnson</td>
+                                <td>ECE</td>
+                                <td>0</td>
+                                <td><span class="status-badge status-pending">Pending Registration</span></td>
+                                <td>
+                                    <button class="btn btn-primary"
+                                        style="padding: 0.25rem 0.75rem; font-size: 0.85rem;">View</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <style>
+        .tab-content {
+            display: none;
+        }
+
+        #overview {
+            display: block;
+        }
+
+        /* Initial state */
+    </style>
+
+    <script src="app.js"></script>
+    <script>
+        // Tab switching simulation for admin dashboard
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            const target = document.getElementById(tabId) || document.getElementById('students'); // fallback to mock table
+            target.style.display = 'block';
+
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const titleMap = {
+                'overview': 'Dashboard Overview',
+                'students': 'Manage Students',
+                'events': 'Manage Events',
+                'registrations': 'Recent Registrations',
+                'certificates': 'Issue Certificates'
+            };
+
+            document.getElementById('pageTitle').textContent = titleMap[tabId];
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        // Media query JS adjust for sidebar
+        if (window.innerWidth <= 768) {
+            document.querySelector('.admin-topbar .hamburger').style.display = 'block';
+        }
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                document.querySelector('.admin-topbar .hamburger').style.display = 'block';
+            } else {
+                document.querySelector('.admin-topbar .hamburger').style.display = 'none';
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+
+</html>

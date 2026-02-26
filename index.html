@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Event Participation & Certificate System</title>
+  <meta name="description" content="Manage registrations, participation, and certificates efficiently for college events.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar glass-panel">
+    <div class="nav-brand">
+      <i class="fa-solid fa-graduation-cap"></i>
+      EventSys
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="events.html" class="nav-link">Events</a></li>
+      <li><a href="register.html" class="nav-link">Register</a></li>
+      <li><a href="participate.html" class="nav-link">Participate</a></li>
+      <li><a href="admin.html" class="nav-link">Admin</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" aria-label="Toggle Dark Mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="login.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Login</a>
+      <button class="hamburger" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero glass fade-in" style="margin: 2rem 5%; text-align: center; padding: 6rem 2rem;">
+      <h1 class="section-title" style="font-size: 3.5rem;">College Event Participation & Certificate System</h1>
+      <p class="section-subtitle" style="font-size: 1.25rem; max-width: 800px; margin: 0 auto 3rem auto;">
+        Manage registrations, participation, and certificates efficiently. Enhance student engagement with a seamless academic event platform.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="register.html" class="btn btn-primary btn-lg">Register for Event</a>
+        <a href="events.html" class="btn btn-outline btn-lg">View Events</a>
+        <a href="#about" class="btn btn-outline btn-lg">About the System</a>
+      </div>
+    </section>
+
+    <!-- About / Features Section -->
+    <section id="about" class="animate-element">
+      <div class="section-header">
+        <h2 class="section-title">System Features</h2>
+        <p class="section-subtitle">Everything you need to organize and participate in college events.</p>
+      </div>
+      <div class="grid-cards">
+        
+        <div class="card glass">
+          <i class="fa-solid fa-user-plus card-icon"></i>
+          <h3>Student Registration</h3>
+          <p class="text-secondary">Seamless onboarding process for students to register with their academic details safely.</p>
+        </div>
+        
+        <div class="card glass">
+          <i class="fa-solid fa-calendar-check card-icon"></i>
+          <h3>Event Management</h3>
+          <p class="text-secondary">Organize symposia, workshops, and seminars with clear schedules and venues.</p>
+        </div>
+
+        <div class="card glass">
+          <i class="fa-solid fa-clipboard-user card-icon"></i>
+          <h3>Participation Tracking</h3>
+          <p class="text-secondary">Track student attendance dynamically. Select multiple events at once.</p>
+        </div>
+
+        <div class="card glass">
+          <i class="fa-solid fa-certificate card-icon"></i>
+          <h3>Certificate Issuance</h3>
+          <p class="text-secondary">Automated digital certificate generation upon successful event completion.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="animate-element" style="background: var(--card-bg); backdrop-filter: blur(16px); margin: 2rem 5%; border-radius: var(--radius-xl); border: 1px solid var(--card-border);">
+      <div class="grid-cards" style="text-align: center; padding: 2rem 0;">
+        
+        <div>
+          <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">150+</div>
+          <p style="font-size: 1.1rem; font-weight: 500;">Total Events Conducted</p>
+        </div>
+
+        <div>
+          <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">5,000+</div>
+          <p style="font-size: 1.1rem; font-weight: 500;">Total Students Participated</p>
+        </div>
+
+        <div>
+          <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">12,000+</div>
+          <p style="font-size: 1.1rem; font-weight: 500;">Certificates Issued</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3><i class="fa-solid fa-graduation-cap"></i> EventSys</h3>
+        <p class="text-secondary">Elevating academic experiences through automated event management.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Department</h3>
+        <ul style="color: var(--text-secondary); line-height: 2;">
+          <li>Computer Science & Engineering</li>
+          <li>Information Technology</li>
+          <li>Electronics & Communication</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Contact Info</h3>
+        <ul style="color: var(--text-secondary); line-height: 2;">
+          <li><i class="fa-solid fa-envelope"></i> contact@college.edu</li>
+          <li><i class="fa-solid fa-phone"></i> +1 234 567 8900</li>
+          <li><i class="fa-solid fa-location-dot"></i> 123 University Avenue, Campus Main Block</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 College Event Participation & Certificate System. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

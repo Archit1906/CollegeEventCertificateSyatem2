@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EventSys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--bg-gradient-light);
+        }
+
+        [data-theme='dark'] .auth-container {
+            background: var(--bg-gradient-dark);
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+            padding: 3rem 2.5rem;
+            border-radius: var(--radius-xl);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-container">
+        <div class="card glass auth-card fade-in">
+
+            <!-- Back to home -->
+            <a href="index.html"
+                style="position: absolute; top: 1.5rem; left: 1.5rem; color: var(--text-secondary); font-size: 1.25rem;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" style="position: absolute; top: 1rem; right: 1.5rem;"
+                aria-label="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <div style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Welcome Back</h2>
+            <p class="text-secondary" style="margin-bottom: 2rem;">Sign in to your EventSys account.</p>
+
+            <form id="loginForm" style="text-align: left;" onsubmit="handleLogin(event)">
+
+                <div class="form-group">
+                    <label class="form-label" for="loginId">Register Number / Admin ID</label>
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-user"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                        <input type="text" id="loginId" class="form-control" required placeholder="e.g. 2026CSE101"
+                            style="padding-left: 2.5rem;">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label" for="password">Password</label>
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-lock"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                        <input type="password" id="password" class="form-control" required placeholder="••••••••"
+                            style="padding-left: 2.5rem;">
+                    </div>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: 0.9rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" style="accent-color: var(--primary-color);"> Remember me
+                    </label>
+                    <a href="#" style="color: var(--primary-color); font-weight: 500;">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg"
+                    style="width: 100%; font-size: 1.1rem; margin-bottom: 1rem;">
+                    Sign In <i class="fa-solid fa-right-to-bracket" style="margin-left: 0.5rem;"></i>
+                </button>
+
+            </form>
+
+            <p class="text-secondary" style="font-size: 0.95rem;">
+                Don't have an account? <a href="register.html"
+                    style="color: var(--primary-color); font-weight: 500;">Register here</a>
+            </p>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('loginId').value.toLowerCase();
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
+            btn.disabled = true;
+
+            // Mock auth logic
+            setTimeout(() => {
+                if (id === 'admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'student-dashboard.html';
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

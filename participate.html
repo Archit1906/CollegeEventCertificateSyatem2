@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participate - Event Selection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .sticky-bar {
+            position: sticky;
+            bottom: 0;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            padding: 1.5rem 5%;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sticky-bar.visible {
+            transform: translateY(0);
+        }
+
+        .event-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .checkbox-card {
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar glass-panel">
+        <div class="nav-brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            EventSys
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="events.html" class="nav-link">Events</a></li>
+            <li><a href="register.html" class="nav-link">Register</a></li>
+            <li><a href="participate.html" class="nav-link active">Participate</a></li>
+            <li><a href="admin.html" class="nav-link">Admin</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <a href="login.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">Login</a>
+            <button class="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-bottom: 6rem;">
+
+        <section class="fade-in">
+            <div class="section-header">
+                <h1 class="section-title">Select Events to Participate</h1>
+                <p class="section-subtitle">Choose multiple events and confirm your attendance in one go.</p>
+            </div>
+
+            <!-- Student Details -->
+            <div class="glass animate-element" style="padding: 2rem; margin-bottom: 3rem;">
+                <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;"><i
+                        class="fa-solid fa-user-check text-primary"></i> Step 1: Verify Identity</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" for="regNo">Register Number</label>
+                        <input type="text" id="regNo" class="form-control" placeholder="Enter Registration No">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" for="sName">Student Name</label>
+                        <input type="text" id="sName" class="form-control" placeholder="Enter Full Name">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Selection -->
+            <h2 class="animate-element" style="font-size: 1.25rem; margin-bottom: 1.5rem;"><i
+                    class="fa-solid fa-list-check text-primary"></i> Step 2: Select Events</h2>
+
+            <div class="event-selection-grid">
+
+                <!-- Event 1 -->
+                <label class="card glass checkbox-card animate-element">
+                    <input type="checkbox" value="National Tech Symposium" data-date="Oct 15, 2026"
+                        data-venue="Main Auditorium">
+                    <h3 style="margin-right: 2rem; margin-bottom: 0.5rem; font-size: 1.1rem;">National Tech Symposium
+                    </h3>
+                    <p style="color: var(--primary-color); font-size: 0.85rem; font-weight: 500; margin-bottom: 1rem;">
+                        Oct 15, 2026</p>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                        <p><i class="fa-solid fa-building-user"></i> CSE Dept</p>
+                        <p><i class="fa-solid fa-location-dot"></i> Main Auditorium</p>
+                    </div>
+                </label>
+
+                <!-- Event 2 -->
+                <label class="card glass checkbox-card animate-element" style="transition-delay: 0.1s;">
+                    <input type="checkbox" value="AI & ML Workshop" data-date="Oct 20, 2026"
+                        data-venue="Lab 4, Block IT">
+                    <h3 style="margin-right: 2rem; margin-bottom: 0.5rem; font-size: 1.1rem;">AI & Machine Learning
+                        Workshop</h3>
+                    <p style="color: var(--primary-color); font-size: 0.85rem; font-weight: 500; margin-bottom: 1rem;">
+                        Oct 20, 2026</p>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                        <p><i class="fa-solid fa-building-user"></i> IT Dept</p>
+                        <p><i class="fa-solid fa-location-dot"></i> Lab 4, Block IT</p>
+                    </div>
+                </label>
+
+                <!-- Event 3 -->
+                <label class="card glass checkbox-card animate-element" style="transition-delay: 0.2s;">
+                    <input type="checkbox" value="Robotics Seminar" data-date="Nov 05, 2026"
+                        data-venue="Seminar Hall 1">
+                    <h3 style="margin-right: 2rem; margin-bottom: 0.5rem; font-size: 1.1rem;">Robotics Seminar 2026</h3>
+                    <p style="color: var(--primary-color); font-size: 0.85rem; font-weight: 500; margin-bottom: 1rem;">
+                        Nov 05, 2026</p>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                        <p><i class="fa-solid fa-building-user"></i> ECE Dept</p>
+                        <p><i class="fa-solid fa-location-dot"></i> Seminar Hall 1</p>
+                    </div>
+                </label>
+
+                <!-- Event 4 -->
+                <label class="card glass checkbox-card animate-element" style="transition-delay: 0.3s;">
+                    <input type="checkbox" value="Cybersecurity Hackathon" data-date="Nov 12, 2026"
+                        data-venue="Main Lab Complex">
+                    <h3 style="margin-right: 2rem; margin-bottom: 0.5rem; font-size: 1.1rem;">Cybersecurity Hackathon
+                    </h3>
+                    <p style="color: var(--primary-color); font-size: 0.85rem; font-weight: 500; margin-bottom: 1rem;">
+                        Nov 12, 2026</p>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                        <p><i class="fa-solid fa-building-user"></i> CSE Dept</p>
+                        <p><i class="fa-solid fa-location-dot"></i> Main Lab Complex</p>
+                    </div>
+                </label>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sticky Confirmation Bar -->
+    <div class="sticky-bar" id="stickyConfirm">
+        <div>
+            <h3 style="margin-bottom: 0; font-size: 1.1rem;">Ready to Confirm?</h3>
+            <p class="text-secondary" style="font-size: 0.9rem;">You have selected <strong id="selCount"
+                    style="color: var(--primary-color);">0</strong> events.</p>
+        </div>
+        <button class="btn btn-primary btn-lg" onclick="confirmParticipation()">Confirm Participation <i
+                class="fa-solid fa-check" style="margin-left: 0.5rem;"></i></button>
+    </div>
+
+    <!-- Summary Modal -->
+    <div class="modal-overlay" id="summaryModal">
+        <div class="modal-content glass">
+            <i class="fa-solid fa-circle-check modal-icon"></i>
+            <h2>Registration Confirmed!</h2>
+            <p class="text-secondary" style="margin-bottom: 1.5rem;">You have successfully registered for the selected
+                events.</p>
+
+            <div id="summaryList"
+                style="text-align: left; background: var(--bg-color); padding: 1rem; border-radius: var(--radius-md); max-height: 200px; overflow-y: auto; margin-bottom: 2rem; border: 1px solid var(--card-border);">
+                <!-- Summary items will be injected here via JS -->
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="student-dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+                <button onclick="closeModal('summaryModal'); window.location.reload();"
+                    class="btn btn-outline">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const checkboxes = document.querySelectorAll('.checkbox-card input[type="checkbox"]');
+        const stickyBar = document.getElementById('stickyConfirm');
+        const selCount = document.getElementById('selCount');
+        const summaryList = document.getElementById('summaryList');
+
+        checkboxes.forEach(box => {
+            box.addEventListener('change', function () {
+                const card = this.closest('.checkbox-card');
+                if (this.checked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+                updateStickyBar();
+            });
+        });
+
+        function updateStickyBar() {
+            const count = document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked').length;
+            selCount.textContent = count;
+            if (count > 0) {
+                stickyBar.classList.add('visible');
+            } else {
+                stickyBar.classList.remove('visible');
+            }
+        }
+
+        function confirmParticipation() {
+            const regNo = document.getElementById('regNo').value.trim();
+            const sName = document.getElementById('sName').value.trim();
+
+            if (!regNo || !sName) {
+                alert("Please enter Register Number and Name to confirm participation.");
+                return;
+            }
+
+            const selectedBoxes = document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked');
+            summaryList.innerHTML = '';
+
+            selectedBoxes.forEach((box, index) => {
+                const title = box.value;
+                const date = box.getAttribute('data-date');
+                const venue = box.getAttribute('data-venue');
+
+                summaryList.innerHTML += `
+          <div style="padding: 0.75rem; border-bottom: ${index === selectedBoxes.length - 1 ? 'none' : '1px solid var(--card-border)'};">
+            <h4 style="margin: 0; font-size: 0.95rem;">${title}</h4>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); display: flex; gap: 1rem; margin-top: 0.25rem;">
+              <span><i class="fa-regular fa-calendar" style="color: var(--primary-color);"></i> ${date}</span>
+              <span><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> ${venue}</span>
+            </div>
+          </div>
+        `;
+            });
+
+            showModal('summaryModal');
+        }
+    </script>
+</body>
+
+</html>
