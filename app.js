@@ -815,9 +815,16 @@ const EventParticipate = {
         xpToRender = Math.round(xpToRender * multiplier);
       }
 
+      // Check if logged-in user is already registered
+      let hasRegistered = false;
+      const currentUser = AuthManager.verifyToken();
+      if (currentUser && typeof RegistrationManager !== 'undefined') {
+        hasRegistered = RegistrationManager.hasRegistered(currentUser.id, evt.title);
+      }
+
       const card = document.createElement('label');
-      card.className = `interactive-card glass selectable-card event-tile ${isCompleted ? 'disabled-card' : ''}`;
-      if (isCompleted) {
+      card.className = `interactive-card glass selectable-card event-tile ${(isCompleted || hasRegistered) ? 'disabled-card' : ''}`;
+      if (isCompleted || hasRegistered) {
         card.style.opacity = '0.6';
         card.style.cursor = 'not-allowed';
       }
@@ -826,8 +833,17 @@ const EventParticipate = {
       card.setAttribute('data-xp', xpToRender); // Store multiplied XP
       card.setAttribute('data-category', evt.category);
 
+      let statusMsg = '';
+      if (hasRegistered) {
+        statusMsg = '<span class="text-primary" style="font-weight: 500; margin-top: 0.5rem;"><i class="fa-solid fa-circle-check"></i> Already Registered</span>';
+      } else if (isCompleted) {
+        statusMsg = '<span class="text-success" style="font-weight: 500; margin-top: 0.5rem;"><i class="fa-solid fa-check-double"></i> Completed (No selection)</span>';
+      } else {
+        statusMsg = '<span class="text-warning" style="font-weight: 500; margin-top: 0.5rem;"><i class="fa-solid fa-clock"></i> ' + evt.status + '</span>';
+      }
+
       card.innerHTML = `
-                <input type="checkbox" value="${evt.title}" data-date="${formattedDate}" data-venue="${evt.venue}" ${isCompleted ? 'disabled' : ''}>
+                <input type="checkbox" value="${evt.title}" data-date="${formattedDate}" data-venue="${evt.venue}" ${(isCompleted || hasRegistered) ? 'disabled' : ''}>
                 <div class="checkmark-circle"><i class="fa-solid fa-check"></i></div>
 
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
@@ -845,10 +861,7 @@ const EventParticipate = {
                     <p class="text-secondary" style="font-size: 0.9rem; margin: 0; display: flex; flex-direction: column; gap: 0.3rem;">
                         <span><i class="fa-solid fa-calendar-day" style="width: 20px;"></i> ${formattedDate} | ${evt.time}</span>
                         <span><i class="fa-solid fa-location-dot" style="width: 20px;"></i> ${evt.venue}</span>
-                        ${isCompleted
-          ? '<span class="text-success" style="font-weight: 500; margin-top: 0.5rem;"><i class="fa-solid fa-check-double"></i> Completed (No selection)</span>'
-          : '<span class="text-warning" style="font-weight: 500; margin-top: 0.5rem;"><i class="fa-solid fa-clock"></i> ' + evt.status + '</span>'
-        }
+                        ${statusMsg}
                     </p>
                 </div>
             `;
@@ -1071,3 +1084,90 @@ const AuthManager = {
 };
 
 AuthManager.init();
+
+// =========================================================================
+// EVENT REGISTRATION STATE MANAGEMENT
+// =========================================================================
+
+const RegistrationManager = {
+  registrations: [],
+
+  init() {
+    this.loadRegistrations();
+  },
+
+  loadRegistrations() {
+    const stored = localStorage.getItem('eventSys_registrations');
+    if (stored) {
+      this.registrations = JSON.parse(stored);
+    } else {
+      // Seed default registrations for the demo
+      this.registrations = [
+        {
+          eventId: 'evt_1', // Hackathon 3.0
+          studentId: '2026cse101',
+          studentName: 'Alex Carter',
+          dateRegistered: new Date().toISOString(),
+          status: 'Registered', // 'Registered', 'Attended'
+          certificateIssued: false
+        }
+      ];
+      this.saveRegistrations();
+    }
+  },
+
+  saveRegistrations() {
+    localStorage.setItem('eventSys_registrations', JSON.stringify(this.registrations));
+  },
+
+  registerForEvents(studentId, studentName, eventTitles) {
+    if (!eventTitles || eventTitles.length === 0) return { success: false, message: "No events selected." };
+
+    // Map titles back to event IDs
+    const allEvents = EventManager.getAllEvents();
+    let registeredCount = 0;
+
+    eventTitles.forEach(title => {
+      const event = allEvents.find(e => e.title === title);
+      if (event) {
+        // Check if already registered
+        const existing = this.registrations.find(r => r.eventId === event.id && r.studentId === studentId);
+        if (!existing) {
+          this.registrations.push({
+            eventId: event.id,
+            studentId: studentId,
+            studentName: studentName,
+            dateRegistered: new Date().toISOString(),
+            status: 'Registered',
+            certificateIssued: false
+          });
+          registeredCount++;
+
+          // Optionally: Increase the registered count on the event object itself
+          event.registered = (parseInt(event.registered) || 0) + 1;
+        }
+      }
+    });
+
+    if (registeredCount > 0) {
+      this.saveRegistrations();
+      EventManager.saveEvents(allEvents); // Save the updated registered counts
+      return { success: true, message: `Successfully registered for ${registeredCount} event(s)!` };
+    } else {
+      return { success: false, message: `You are already registered for the selected events.` };
+    }
+  },
+
+  getRegistrantsForEvent(eventId) {
+    return this.registrations.filter(r => r.eventId === eventId);
+  },
+
+  hasRegistered(studentId, eventTitle) {
+    const allEvents = EventManager.getAllEvents();
+    const event = allEvents.find(e => e.title === eventTitle);
+    if (!event) return false;
+    return this.registrations.some(r => r.eventId === event.id && r.studentId === studentId);
+  }
+};
+
+RegistrationManager.init();

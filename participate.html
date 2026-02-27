@@ -398,8 +398,25 @@
             }
 
             const selectedBoxes = document.querySelectorAll('.selectable-card input[type="checkbox"]:checked');
-            summaryList.innerHTML = '';
 
+            if (selectedBoxes.length === 0) {
+                if (typeof window.showToast === 'function') window.showToast('Select at least one event.', 'warning');
+                return;
+            }
+
+            const eventTitles = Array.from(selectedBoxes).map(box => box.value);
+            const studentId = document.getElementById('regNo').value;
+            const studentName = document.getElementById('sName').value;
+
+            // Save to database
+            const response = RegistrationManager.registerForEvents(studentId, studentName, eventTitles);
+
+            if (!response.success) {
+                if (typeof window.showToast === 'function') window.showToast(response.message, 'error');
+                return;
+            }
+
+            summaryList.innerHTML = '';
             modalXPGain.textContent = "+" + totalXP + " XP";
 
             selectedBoxes.forEach((box, index) => {
@@ -427,6 +444,17 @@
             showModal('summaryModal');
             // Trigger global confetti from app.js
             setTimeout(fireConfetti, 300);
+
+            // Uncheck and disable the registered cards visually
+            selectedBoxes.forEach(box => {
+                box.checked = false;
+                const card = box.closest('.event-tile');
+                card.classList.remove('selected');
+                card.classList.add('disabled-card');
+                box.disabled = true;
+            });
+            totalXP = 0;
+            updateStickyBar();
         }
     </script>
 </body>

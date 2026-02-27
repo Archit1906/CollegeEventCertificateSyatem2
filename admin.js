@@ -1342,3 +1342,128 @@ window.closeAdminModal = function () {
     const overlay = document.getElementById('adminModalOverlay');
     if (overlay) overlay.classList.remove('active');
 };
+
+// =========================================================================
+// ATTENDANCE TERMINAL MANAGEMENT
+// =========================================================================
+
+const AttendanceManager = {
+    init() {
+        if (!document.getElementById('attendanceEventSelect')) return;
+        this.populateDropdown();
+        this.setupListeners();
+        this.renderTable();
+    },
+
+    populateDropdown() {
+        const select = document.getElementById('attendanceEventSelect');
+        select.innerHTML = '';
+
+        if (typeof EventManager === 'undefined') {
+            select.innerHTML = '<option>EventManager not loaded</option>';
+            return;
+        }
+
+        const events = EventManager.getAllEvents();
+        if (events.length === 0) {
+            select.innerHTML = '<option>No events available</option>';
+            return;
+        }
+
+        events.forEach(evt => {
+            const opt = document.createElement('option');
+            opt.value = evt.id;
+            opt.textContent = evt.title;
+            select.appendChild(opt);
+        });
+    },
+
+    setupListeners() {
+        const select = document.getElementById('attendanceEventSelect');
+        select.addEventListener('change', () => this.renderTable());
+
+        const autoIssueBtn = document.getElementById('btnAutoIssueCerts');
+        if (autoIssueBtn) {
+            autoIssueBtn.addEventListener('click', () => {
+                if (window.showToast) window.showToast('Checking attendance logs for auto-issue...', 'info');
+                setTimeout(() => {
+                    if (window.showToast) window.showToast('Certificates Auto-Issued to present students.', 'success');
+                }, 1000);
+            });
+        }
+    },
+
+    renderTable() {
+        const select = document.getElementById('attendanceEventSelect');
+        const tbody = document.getElementById('attendanceGridBody');
+
+        if (!select || !tbody) return;
+
+        const eventId = select.value;
+        tbody.innerHTML = '';
+
+        if (typeof RegistrationManager === 'undefined') {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">RegistrationManager not loaded.</td></tr>';
+            return;
+        }
+
+        const registrants = RegistrationManager.getRegistrantsForEvent(eventId);
+
+        if (registrants.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">No registrations for this event yet.</td></tr>`;
+            return;
+        }
+
+        registrants.forEach((reg, index) => {
+            const tr = document.createElement('tr');
+
+            // Format nice date
+            const dateObj = new Date(reg.dateRegistered);
+            const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+
+            const isPresent = reg.status === 'Attended';
+            const badgeClass = isPresent ? 'success' : 'warning';
+            const badgeText = isPresent ? 'Present' : 'Registered';
+            const uuid = `attBtn_${index}`;
+
+            tr.innerHTML = `
+                <td>${reg.studentName}</td>
+                <td>${reg.studentId}</td>
+                <td>${formattedDate}</td>
+                <td><span class="status-badge ${badgeClass}" id="badge_${uuid}">${badgeText}</span></td>
+                <td style="text-align: right;">
+                    <button class="btn btn-outline" id="btn_${uuid}"
+                        style="padding: 0.4rem 1rem; border-color: ${isPresent ? 'var(--text-secondary)' : 'var(--color-success)'}; color: ${isPresent ? 'var(--text-secondary)' : 'var(--color-success)'};"
+                        ${isPresent ? 'disabled' : ''}>
+                        ${isPresent ? 'Logged' : 'Mark Present'}
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+
+            // Bind Mark Present Logic
+            if (!isPresent) {
+                const btn = document.getElementById(`btn_${uuid}`);
+                btn.addEventListener('click', () => {
+                    // Update visual state instantly
+                    document.getElementById(`badge_${uuid}`).className = 'status-badge success';
+                    document.getElementById(`badge_${uuid}`).innerText = 'Present';
+                    btn.innerText = 'Logged';
+                    btn.style.borderColor = 'var(--text-secondary)';
+                    btn.style.color = 'var(--text-secondary)';
+                    btn.disabled = true;
+
+                    // Update data state
+                    reg.status = 'Attended';
+                    RegistrationManager.saveRegistrations();
+                    if (window.showToast) window.showToast('Marked Present', 'success');
+                });
+            }
+        });
+    }
+};
+
+// Initialize after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => AttendanceManager.init(), 200); // Give dependencies time
+});

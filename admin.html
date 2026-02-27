@@ -611,14 +611,12 @@
                         <div class="grid-toolbar">
                             <div style="display: flex; gap: 1rem; align-items: center;">
                                 <span style="font-weight: 600;">Active Event:</span>
-                                <select
+                                <select id="attendanceEventSelect"
                                     style="padding: 0.6rem 1rem; border-radius: var(--radius-pill); border: 1px solid var(--card-border); background: var(--bg-color); color: var(--primary-color); font-weight: 600; outline: none;">
-                                    <option>National Tech Symposium 2026</option>
-                                    <option>AI & ML Deep Dive</option>
+                                    <option>Loading Events...</option>
                                 </select>
                             </div>
-                            <button class="btn btn-primary"
-                                onclick="window.showToast('300 Certificates Auto-Issued based on Attendance.', 'success')">
+                            <button class="btn btn-primary" id="btnAutoIssueCerts">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Issue Certs to Presentees
                             </button>
                         </div>
@@ -633,39 +631,8 @@
                                     <th style="text-align: right;">Toggle Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Alex Carter</td>
-                                    <td>2026CSE101</td>
-                                    <td>Oct 10, 2026</td>
-                                    <td><span class="status-badge warning" id="attGrp1">Registered</span></td>
-                                    <td style="text-align: right;">
-                                        <button class="btn btn-outline"
-                                            style="padding: 0.4rem 1rem; border-color: var(--color-success); color: var(--color-success);"
-                                            onclick="document.getElementById('attGrp1').className='status-badge success'; document.getElementById('attGrp1').innerText='Present'; window.showToast('Marked Present')">Mark
-                                            Present</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Sarah Jen</td>
-                                    <td>2026ROB205</td>
-                                    <td>Oct 11, 2026</td>
-                                    <td><span class="status-badge success">Present</span></td>
-                                    <td style="text-align: right;">
-                                        <button class="btn btn-outline" style="padding: 0.4rem 1rem;"
-                                            disabled>Logged</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Rahul Kumar</td>
-                                    <td>2026MEC042</td>
-                                    <td>Oct 11, 2026</td>
-                                    <td><span class="status-badge danger">Absent</span></td>
-                                    <td style="text-align: right;">
-                                        <button class="btn btn-outline" style="padding: 0.4rem 1rem;"
-                                            disabled>Logged</button>
-                                    </td>
-                                </tr>
+                            <tbody id="attendanceGridBody">
+                                <!-- Populated dynamically by admin.js -->
                             </tbody>
                         </table>
                     </div>
