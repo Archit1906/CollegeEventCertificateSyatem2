@@ -195,6 +195,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   padding: 0.8rem 1.8rem;
   border-radius: var(--radius-pill);
   font-weight: 600;

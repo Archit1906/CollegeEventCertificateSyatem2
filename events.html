@@ -64,11 +64,13 @@
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
-                    <select class="form-control" style="border-radius: var(--radius-pill); cursor: pointer;">
+                    <select id="exploreCategoryFilter" class="form-control"
+                        style="border-radius: var(--radius-pill); cursor: pointer;">
                         <option value="">All Categories</option>
-                        <option value="tech">Technical</option>
-                        <option value="culture">Cultural</option>
-                        <option value="workshop">Workshops</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Cultural">Cultural</option>
+                        <option value="Workshop">Workshops</option>
+                        <option value="Hackathon">Hackathon</option>
                     </select>
                 </div>
 
@@ -77,119 +79,16 @@
             </div>
 
             <!-- Events Grid -->
-            <div class="grid-cards">
+            <div class="grid-cards" id="dynamicExploreGrid">
+                <!-- Dynamically injected events go here -->
+            </div>
 
-                <!-- Interactive Event Card 1 -->
-                <div class="interactive-card glass" data-aos="zoom-in" data-aos-delay="100">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-                        <div class="badge badge-tech"><i class="fa-solid fa-microchip"></i> Technical</div>
-                        <div class="badge badge-urgent"><i class="fa-solid fa-ticket"></i> Only 15 Seats Left!</div>
-                    </div>
-
-                    <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; line-height: 1.3;">National Tech Symposium</h3>
-
-                    <div class="countdown mt-2 mb-4 text-primary" data-date="2026-10-15T09:00:00"
-                        style="font-weight: 600; font-size: 0.95rem; background: rgba(99,102,241,0.1); padding: 0.5rem 1rem; border-radius: var(--radius-sm); display: inline-block;">
-                        <i class="fa-regular fa-clock"></i> Loading timer...
-                    </div>
-
-                    <div
-                        style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--text-secondary); display: grid; gap: 0.5rem;">
-                        <div><i class="fa-solid fa-calendar-day" style="width: 24px; color: var(--primary-color);"></i>
-                            Oct 15, 2026 | 09:00 AM</div>
-                        <div><i class="fa-solid fa-building-user"
-                                style="width: 24px; color: var(--secondary-color);"></i> Org: Dept. of CSE</div>
-                        <div><i class="fa-solid fa-location-dot" style="width: 24px; color: var(--accent-color);"></i>
-                            Main Auditorium</div>
-                    </div>
-
-                    <p style="font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1;">
-                        A premier national level technical symposium featuring expert talks, paper presentations,
-                        project expos, and intensive coding challenges.
-                    </p>
-
-                    <a href="participate.html" class="btn btn-outline"
-                        style="width: 100%; justify-content: space-between;">
-                        Select to Participate <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <!-- Interactive Event Card 2 -->
-                <div class="interactive-card glass" data-aos="zoom-in" data-aos-delay="200">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-                        <div class="badge badge-workshop"><i class="fa-solid fa-laptop-code"></i> Workshop</div>
-                        <div class="badge"
-                            style="background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2);">
-                            <i class="fa-solid fa-check"></i> Seats Available
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; line-height: 1.3;">AI & Machine Learning Deep
-                        Dive</h3>
-
-                    <div class="countdown mt-2 mb-4 text-primary" data-date="2026-10-20T10:00:00"
-                        style="font-weight: 600; font-size: 0.95rem; background: rgba(99,102,241,0.1); padding: 0.5rem 1rem; border-radius: var(--radius-sm); display: inline-block;">
-                        <i class="fa-regular fa-clock"></i> Loading timer...
-                    </div>
-
-                    <div
-                        style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--text-secondary); display: grid; gap: 0.5rem;">
-                        <div><i class="fa-solid fa-calendar-day" style="width: 24px; color: var(--primary-color);"></i>
-                            Oct 20, 2026 | 10:00 AM</div>
-                        <div><i class="fa-solid fa-building-user"
-                                style="width: 24px; color: var(--secondary-color);"></i> Org: Dept. of IT</div>
-                        <div><i class="fa-solid fa-location-dot" style="width: 24px; color: var(--accent-color);"></i>
-                            Lab 4, Block IT</div>
-                    </div>
-
-                    <p style="font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1;">
-                        Intensive hands-on workshop focused on building, training, and deploying neural networks using
-                        Python and modern frameworks.
-                    </p>
-
-                    <a href="participate.html" class="btn btn-outline"
-                        style="width: 100%; justify-content: space-between;">
-                        Select to Participate <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <!-- Interactive Event Card 3 -->
-                <div class="interactive-card glass" data-aos="zoom-in" data-aos-delay="300">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-                        <div class="badge badge-culture"><i class="fa-solid fa-masks-theater"></i> Cultural</div>
-                    </div>
-
-                    <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; line-height: 1.3;">Spring Fest 2026</h3>
-
-                    <div class="countdown mt-2 mb-4 text-primary" data-date="2026-11-05T17:00:00"
-                        style="font-weight: 600; font-size: 0.95rem; background: rgba(99,102,241,0.1); padding: 0.5rem 1rem; border-radius: var(--radius-sm); display: inline-block;">
-                        <i class="fa-regular fa-clock"></i> Loading timer...
-                    </div>
-
-                    <div
-                        style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--text-secondary); display: grid; gap: 0.5rem;">
-                        <div><i class="fa-solid fa-calendar-day" style="width: 24px; color: var(--primary-color);"></i>
-                            Nov 05, 2026 | 05:00 PM</div>
-                        <div><i class="fa-solid fa-building-user"
-                                style="width: 24px; color: var(--secondary-color);"></i> Org: Student Union</div>
-                        <div><i class="fa-solid fa-location-dot" style="width: 24px; color: var(--accent-color);"></i>
-                            Open Air Theatre</div>
-                    </div>
-
-                    <p style="font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1;">
-                        The biggest inter-college cultural festival featuring music bands, dance battles, dramatics, and
-                        celebrity guest performances.
-                    </p>
-
-                    <a href="participate.html" class="btn btn-outline"
-                        style="width: 100%; justify-content: space-between;">
-                        Select to Participate <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </div>
-
+            <!-- Empty State (Hidden by default) -->
+            <div id="exploreEmptyState" style="display: none; text-align: center; padding: 4rem 2rem;">
+                <i class="fa-solid fa-calendar-xmark"
+                    style="font-size: 4rem; color: var(--text-secondary); margin-bottom: 1.5rem;"></i>
+                <h3 style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem;">No Events Found</h3>
+                <p style="color: var(--text-secondary);">Try adjusting your search or filters.</p>
             </div>
         </section>
 

@@ -59,7 +59,7 @@
                 <a href="#" class="sidebar-item" data-target="rolesModule">
                     <i class="fa-solid fa-shield-halved"></i> <span>Roles & Access</span>
                 </a>
-                <a href="#" class="sidebar-item">
+                <a href="#" class="sidebar-item" data-target="settingsModule">
                     <i class="fa-solid fa-gear"></i> <span>Settings</span>
                 </a>
             </nav>
@@ -96,7 +96,8 @@
                         <span class="notification-dot"></span>
                     </button>
 
-                    <div class="admin-profile" onclick="window.showToast('Profile settings coming soon!', 'info')">
+                    <div class="admin-profile"
+                        onclick="document.querySelector('.sidebar-item[data-target=\'settingsModule\']').click();">
                         <img src="https://ui-avatars.com/api/?name=Admin+Root&background=6366f1&color=fff" alt="Admin">
                         <div style="display: flex; flex-direction: column;">
                             <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">Root
@@ -121,8 +122,9 @@
                             <p class="text-secondary">Welcome back. Here is what is happening across the college today.
                             </p>
                         </div>
-                        <button class="btn btn-outline" style="border-radius: var(--radius-pill);"><i
-                                class="fa-solid fa-download"></i> Export Report</button>
+                        <button class="btn btn-outline" style="border-radius: var(--radius-pill);"
+                            onclick="window.exportDashboardReport()"><i class="fa-solid fa-download"></i> Export
+                            Report</button>
                     </div>
 
                     <!-- Animated Stat Cards -->
@@ -207,16 +209,19 @@
                         <!-- Export Tools (Top Right) -->
                         <div style="display: flex; gap: 0.8rem;">
                             <button class="btn btn-outline"
-                                style="border-radius: var(--radius-pill); background: var(--admin-surface);"><i
-                                    class="fa-solid fa-file-csv text-success"></i> CSV</button>
+                                style="border-radius: var(--radius-pill); background: var(--admin-surface);"
+                                onclick="window.exportStudentsCSV()"><i class="fa-solid fa-file-csv text-success"></i>
+                                CSV</button>
                             <button class="btn btn-outline"
-                                style="border-radius: var(--radius-pill); background: var(--admin-surface);"><i
+                                style="border-radius: var(--radius-pill); background: var(--admin-surface);"
+                                onclick="window.exportStudentsExcel()"><i
                                     class="fa-solid fa-file-excel text-success"></i> Excel</button>
                             <button class="btn btn-outline"
-                                style="border-radius: var(--radius-pill); background: var(--admin-surface);"><i
-                                    class="fa-solid fa-print"></i> Print</button>
-                            <button class="btn btn-primary" style="border-radius: var(--radius-pill);"><i
-                                    class="fa-solid fa-chart-line"></i> Report</button>
+                                style="border-radius: var(--radius-pill); background: var(--admin-surface);"
+                                onclick="window.printStudentsData()"><i class="fa-solid fa-print"></i> Print</button>
+                            <button class="btn btn-primary" style="border-radius: var(--radius-pill);"
+                                onclick="window.exportStudentsReport()"><i class="fa-solid fa-chart-line"></i>
+                                Report</button>
                         </div>
                     </div>
 
@@ -830,15 +835,48 @@
 
                             <div class="data-grid-wrap shadow-soft"
                                 style="border: none; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);">
+
+                                <!-- Bulk Actions Bar -->
+                                <div id="eventBulkActionsBar"
+                                    style="padding: 1rem 1.5rem; background: rgba(99,102,241,0.05); border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; display: none;">
+                                    <span id="eventBulkCount" style="font-weight: 600; color: var(--primary-color);">0
+                                        Events Selected</span>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button class="btn btn-outline btn-sm"
+                                            onclick="EventAdmin.bulkMarkStatus('upcoming')"><i
+                                                class="fa-solid fa-clock"></i> Upcoming</button>
+                                        <button class="btn btn-outline btn-sm"
+                                            onclick="EventAdmin.bulkMarkStatus('ongoing')"><i
+                                                class="fa-solid fa-play"></i> Ongoing</button>
+                                        <button class="btn btn-outline btn-sm"
+                                            onclick="EventAdmin.bulkMarkStatus('completed')"><i
+                                                class="fa-solid fa-check-double"></i> Completed</button>
+                                        <button class="btn btn-primary btn-sm btn-danger"
+                                            onclick="EventAdmin.bulkDelete()"><i class="fa-solid fa-trash"></i>
+                                            Delete</button>
+                                    </div>
+                                </div>
+
                                 <div style="overflow-x: auto;">
                                     <table class="admin-table smart-table" id="adminEventsTable">
                                         <thead>
                                             <tr>
-                                                <th>Event Log</th>
-                                                <th>Category & XP</th>
-                                                <th>Capacity & Date</th>
-                                                <th>Status</th>
-                                                <th style="text-align: right;">Settings</th>
+                                                <th style="width: 40px; padding-left: 1.5rem;"><input type="checkbox"
+                                                        id="selectAllEvents"></th>
+                                                <th class="sortable" data-sort="title" style="cursor: pointer;">Event
+                                                    Log <i class="fa-solid fa-sort"
+                                                        style="color: #cbd5e1; margin-left: 0.5rem;"></i></th>
+                                                <th class="sortable" data-sort="category" style="cursor: pointer;">
+                                                    Category & XP <i class="fa-solid fa-sort"
+                                                        style="color: #cbd5e1; margin-left: 0.5rem;"></i></th>
+                                                <th class="sortable" data-sort="seats" style="cursor: pointer;">Capacity
+                                                    & Date <i class="fa-solid fa-sort"
+                                                        style="color: #cbd5e1; margin-left: 0.5rem;"></i></th>
+                                                <th class="sortable" data-sort="status" style="cursor: pointer;">Status
+                                                    <i class="fa-solid fa-sort"
+                                                        style="color: #cbd5e1; margin-left: 0.5rem;"></i>
+                                                </th>
+                                                <th style="text-align: right; padding-right: 1.5rem;">Settings</th>
                                             </tr>
                                         </thead>
                                         <tbody id="adminEventsTbody">
@@ -846,10 +884,20 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <div
+                                    style="padding: 1rem 1.5rem; background: rgba(0,0,0,0.01); display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--card-border);">
+                                    <span id="eventPagInfo">Showing 0 entries</span>
+                                    <div style="display: flex; gap: 0.5rem;" id="eventPagination">
+                                        <!-- Pagination dynamically injected -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                     </div>
+
+
                 </section>
 
                 <!-- ================= MODULE: CERTIFICATES ================= -->
@@ -931,6 +979,555 @@
                     </div>
                 </section>
 
+                <!-- ================= MODULE: SYSTEM SETTINGS ================= -->
+                <section id="settingsModule" class="module-section">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700;">System Settings</h1>
+                            <p class="text-secondary" style="font-size: 1.05rem;">Manage platform configurations,
+                                security, and administrative access.</p>
+                        </div>
+                    </div>
+
+                    <!-- Layout: Sidebar Tabs + Content Area -->
+                    <div class="settings-layout">
+
+                        <!-- Settings Internal Nav -->
+                        <div class="settings-sidebar glass">
+                            <nav class="settings-menu">
+                                <a href="#" class="settings-tab-link active" data-tab="st-profile">
+                                    <i class="fa-solid fa-user"></i> Profile Info
+                                </a>
+                                <a href="#" class="settings-tab-link" data-tab="st-security">
+                                    <i class="fa-solid fa-shield-halved"></i> Security
+                                </a>
+                                <a href="#" class="settings-tab-link" data-tab="st-notifications">
+                                    <i class="fa-solid fa-bell"></i> Notifications
+                                </a>
+                                <a href="#" class="settings-tab-link" data-tab="st-preferences">
+                                    <i class="fa-solid fa-palette"></i> Preferences
+                                </a>
+                                <div class="settings-divider">Super Admin</div>
+                                <a href="#" class="settings-tab-link" data-tab="st-config">
+                                    <i class="fa-solid fa-sliders"></i> Configuration
+                                </a>
+                                <a href="#" class="settings-tab-link" data-tab="st-roles">
+                                    <i class="fa-solid fa-users-gear"></i> Roles & Permissions
+                                </a>
+                            </nav>
+                        </div>
+
+                        <!-- Settings Content Panels -->
+                        <div class="settings-content-wrap">
+
+                            <!-- TAB: Profile -->
+                            <div id="st-profile" class="settings-pane active">
+                                <h2 class="settings-pane-title">Personal Profile</h2>
+                                <div class="glass settings-card">
+                                    <form class="settings-form" id="form-profile">
+                                        <!-- Avatar Upload -->
+                                        <div class="avatar-upload-zone">
+                                            <div class="avatar-preview">
+                                                <img src="https://ui-avatars.com/api/?name=Admin+Root&background=6366f1&color=fff"
+                                                    id="profileImgPreview">
+                                                <div class="avatar-edit-overlay"><i class="fa-solid fa-camera"></i>
+                                                </div>
+                                            </div>
+                                            <div class="avatar-upload-text">
+                                                <h4>Profile Picture</h4>
+                                                <p>JPG, GIF or PNG. 1MB max.</p>
+                                                <button type="button" class="btn btn-outline btn-sm">Upload New</button>
+                                                <button type="button" class="btn btn-sm btn-danger-text"
+                                                    style="background:transparent;">Remove</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-grid-2">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="st-fullname"
+                                                    value="Admin Root">
+                                                <label for="st-fullname">Full Name</label>
+                                            </div>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="st-display" value="Root">
+                                                <label for="st-display">Display Name</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-grid-2">
+                                            <div class="form-floating">
+                                                <input type="email" class="form-control" id="st-email"
+                                                    value="root@college.edu">
+                                                <label for="st-email">Email Address</label>
+                                            </div>
+                                            <div class="form-floating">
+                                                <input type="tel" class="form-control" id="st-phone"
+                                                    value="+1 (555) 123-4567">
+                                                <label for="st-phone">Phone Number</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-grid-2">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" value="Directorate" readonly
+                                                    style="background: rgba(0,0,0,0.1); cursor: not-allowed;">
+                                                <label>Department</label>
+                                            </div>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" value="Super Administrator"
+                                                    readonly style="background: rgba(0,0,0,0.1); cursor: not-allowed;">
+                                                <label>System Role <i class="fa-solid fa-lock text-secondary"
+                                                        style="font-size: 0.7rem; margin-top: -5px; margin-left: 2px;"></i></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-floating" style="margin-top: 1rem;">
+                                            <textarea class="form-control" placeholder="Bio"
+                                                style="height: 100px;"></textarea>
+                                            <label>Bio / About</label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- TAB: Security -->
+                            <div id="st-security" class="settings-pane">
+                                <h2 class="settings-pane-title">Security Settings</h2>
+
+                                <div class="glass settings-card mb-4">
+                                    <h3
+                                        style="font-size: 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fa-solid fa-key text-primary"></i> Change Password
+                                    </h3>
+                                    <form class="settings-form form-grid-2" style="align-items: flex-end;"
+                                        id="form-security">
+                                        <div class="form-floating" style="flex: 1; grid-column: span 2;">
+                                            <input type="password" class="form-control" placeholder="Current Password">
+                                            <label>Current Password</label>
+                                        </div>
+                                        <div class="form-floating">
+                                            <input type="password" class="form-control" placeholder="New Password">
+                                            <label>New Password</label>
+                                            <div class="password-strength">
+                                                <div class="strength-bar">
+                                                    <div class="fill"
+                                                        style="width: 60%; background: var(--color-warning);"></div>
+                                                </div>
+                                                <span class="strength-text"
+                                                    style="color: var(--color-warning);">Moderate</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating">
+                                            <input type="password" class="form-control" placeholder="Confirm Password">
+                                            <label>Confirm Password</label>
+                                        </div>
+                                    </form>
+                                    <div style="margin-top: 1rem; text-align: right;">
+                                        <button class="btn btn-outline" style="border-radius: var(--radius-pill);"
+                                            onclick="window.triggerConfirmModal('Change your password?', 'You will be required to login again on all devices.', () => window.showToast('Password Updated. Please log back in.', 'success'))">Update
+                                            Password</button>
+                                    </div>
+                                </div>
+
+                                <div class="glass settings-card mb-4"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; margin-bottom: 0.3rem;"><i
+                                                class="fa-solid fa-mobile-screen-button text-primary"></i> Two-Factor
+                                            Authentication (2FA)</h3>
+                                        <p class="text-secondary" style="font-size: 0.9rem; margin: 0;">Add an extra
+                                            layer of security to your account.</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="sec-2fa">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+                                <div class="glass settings-card">
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;"><i
+                                            class="fa-solid fa-display text-primary"></i> Active Sessions</h3>
+                                    <div class="session-list">
+                                        <div class="session-item">
+                                            <div class="session-icon text-success"><i class="fa-brands fa-windows"></i>
+                                            </div>
+                                            <div class="session-info">
+                                                <h4>Windows • Chrome <span class="badge"
+                                                        style="background: rgba(16,185,129,0.1); color: var(--color-success); font-size: 0.6rem; margin-left: 0.5rem; padding: 0.1rem 0.4rem;">Current
+                                                        Session</span></h4>
+                                                <p>IP: 192.168.1.45 • Last active: Just now</p>
+                                            </div>
+                                        </div>
+                                        <div class="session-item">
+                                            <div class="session-icon text-secondary"><i class="fa-brands fa-apple"></i>
+                                            </div>
+                                            <div class="session-info">
+                                                <h4>iPhone 14 Pro • Safari</h4>
+                                                <p>IP: 104.28.10.15 • Last active: 2 hours ago</p>
+                                            </div>
+                                            <button class="btn btn-outline btn-sm"
+                                                style="color: var(--color-danger); border-color: var(--card-border);"
+                                                onclick="window.triggerConfirmModal('Revoke this session?', 'This device will be logged out immediately.', () => this.parentElement.remove())"><i
+                                                    class="fa-solid fa-xmark"></i> Revoke</button>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="margin-top: 1.5rem; border-top: 1px solid var(--card-border); padding-top: 1rem;">
+                                        <button class="btn btn-outline btn-danger-text"
+                                            onclick="window.triggerConfirmModal('Log out of all other sessions?', 'You will remain logged in on this exact browser only.', () => window.showToast('All other sessions terminated.', 'success'))"><i
+                                                class="fa-solid fa-right-from-bracket"></i> Log out all other
+                                            sessions</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB: Notifications -->
+                            <div id="st-notifications" class="settings-pane">
+                                <h2 class="settings-pane-title">Notification Preferences</h2>
+                                <div class="glass settings-card">
+
+                                    <p class="text-secondary" style="margin-bottom: 1.5rem; font-size: 0.9rem;">
+                                        Configure when and how you receive alerts from the EventSys platform.</p>
+
+                                    <!-- Delivery Matrix Header -->
+                                    <div class="notif-header"
+                                        style="display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem; margin-bottom: 1rem; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">
+                                        <div>Event Type</div>
+                                        <div style="text-align: center;"><i class="fa-solid fa-desktop"></i> In-App
+                                        </div>
+                                        <div style="text-align: center;"><i class="fa-solid fa-envelope"></i> Email
+                                        </div>
+                                    </div>
+
+                                    <div class="notif-row"
+                                        style="display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 0.95rem;">New Student Registrations</h4>
+                                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0;">When a
+                                                student signs up for a new event</p>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked id="notif-inapp-events"><span
+                                                    class="slider round"></span></label>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" id="notif-email-events"><span
+                                                    class="slider round"></span></label></div>
+                                    </div>
+
+                                    <div class="notif-row"
+                                        style="display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 0.95rem;">Certificate Eligibility Alerts
+                                            </h4>
+                                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0;">When
+                                                students hit XP milestones</p>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked id="notif-inapp-security"><span
+                                                    class="slider round"></span></label>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked id="notif-email-security"><span
+                                                    class="slider round"></span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="notif-row"
+                                        style="display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 0.95rem;">Event Capacity Warnings</h4>
+                                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0;">When an
+                                                event hits 90% capacity</p>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked><span class="slider round"></span></label>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked><span class="slider round"></span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="notif-row"
+                                        style="display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 0.95rem;">Weekly Summary Reports</h4>
+                                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0;">Automated
+                                                insights every Monday at 9AM</p>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" id="notif-inapp-summary"><span
+                                                    class="slider round"></span></label></div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked id="notif-email-summary"><span
+                                                    class="slider round"></span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="notif-row"
+                                        style="display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; padding: 1rem 0;">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 0.95rem;">System Updates</h4>
+                                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0;">Patches,
+                                                maintenance, and platform news</p>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked><span class="slider round"></span></label>
+                                        </div>
+                                        <div style="text-align: center;"><label class="toggle-switch"><input
+                                                    type="checkbox" checked><span class="slider round"></span></label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- TAB: Preferences -->
+                            <div id="st-preferences" class="settings-pane">
+                                <h2 class="settings-pane-title">Workspace Preferences</h2>
+
+                                <div class="glass settings-card mb-4">
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;"><i
+                                            class="fa-solid fa-wand-magic-sparkles text-primary"></i> Theme & Aesthetics
+                                    </h3>
+
+                                    <div
+                                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                        <div class="theme-select-card active" data-theme-val="dark"
+                                            onclick="document.querySelectorAll('.theme-select-card').forEach(c=>c.classList.remove('active')); this.classList.add('active'); document.getElementById('settingsSaveBar').classList.add('active');">
+                                            <div class="theme-preview dark"></div>
+                                            <span>Dark Mode</span>
+                                        </div>
+                                        <div class="theme-select-card" data-theme-val="light"
+                                            onclick="document.querySelectorAll('.theme-select-card').forEach(c=>c.classList.remove('active')); this.classList.add('active'); document.getElementById('settingsSaveBar').classList.add('active');">
+                                            <div class="theme-preview light"></div>
+                                            <span>Light Mode</span>
+                                        </div>
+                                        <div class="theme-select-card" data-theme-val="system"
+                                            onclick="document.querySelectorAll('.theme-select-card').forEach(c=>c.classList.remove('active')); this.classList.add('active'); document.getElementById('settingsSaveBar').classList.add('active');">
+                                            <div class="theme-preview"
+                                                style="background: linear-gradient(135deg, #1e293b 50%, #f8fafc 50%);">
+                                            </div>
+                                            <span>System Default</span>
+                                        </div>
+                                    </div>
+
+                                    <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 500;">Accent Color
+                                        <span class="badge" style="font-size: 0.6rem; margin-left: 0.5rem;">Beta</span>
+                                    </h4>
+                                    <div style="display: flex; gap: 0.5rem;" id="accentColorSelector">
+                                        <div class="color-swatch active" data-color-val="indigo"
+                                            style="background: #6366f1;"></div>
+                                        <div class="color-swatch" data-color-val="purple" style="background: #a855f7;">
+                                        </div>
+                                        <div class="color-swatch" data-color-val="emerald" style="background: #10b981;">
+                                        </div>
+                                        <div class="color-swatch" data-color-val="rose" style="background: #e11d48;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="glass settings-card">
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;"><i
+                                            class="fa-solid fa-layer-group text-primary"></i> UI & Animations</h3>
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--card-border);">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 0.95rem;">Enable UI Animations</h4>
+                                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0;">Toggle
+                                                micro-interactions, page transitions, and hover effects.</p>
+                                        </div>
+                                        <label class="toggle-switch"><input type="checkbox" checked
+                                                id="pref-animations"><span class="slider round"></span></label>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 0.95rem;">Compact View</h4>
+                                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0;">Reduce
+                                                padding and structural gaps to show more data per screen.</p>
+                                        </div>
+                                        <label class="toggle-switch"><input type="checkbox" id="pref-compact"><span
+                                                class="slider round"></span></label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- TAB: Config (SuperAdmin) -->
+                            <div id="st-config" class="settings-pane">
+                                <h2 class="settings-pane-title">System Configuration <span class="badge"
+                                        style="background: rgba(239,68,68,0.1); color: var(--color-danger); margin-left: 0.5rem;"><i
+                                            class="fa-solid fa-lock"></i> Super Admin</span></h2>
+
+                                <div class="glass settings-card mb-4"
+                                    style="border-left: 3px solid var(--color-warning);">
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;"><i
+                                            class="fa-solid fa-triangle-exclamation text-warning"></i> Gamification
+                                        Rules</h3>
+                                    <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                        Altering baseline XP formulas or Level thresholds will trigger a global
+                                        recalculation of all student tiers. Ensure you notify the student body
+                                        beforehand.</p>
+
+                                    <div class="form-grid-2">
+                                        <div class="form-group">
+                                            <label class="form-label" style="font-size: 0.85rem;">Global XP
+                                                Multiplier</label>
+                                            <input type="number" class="form-control" id="cfg-xp-multiplier" value="1.0"
+                                                step="0.1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" style="font-size: 0.85rem;">Base XP for Level
+                                                Up</label>
+                                            <input type="number" class="form-control" id="cfg-base-level" value="100"
+                                                step="10">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" style="font-size: 0.85rem;">Certificate Auto-Issue
+                                                Threshold</label>
+                                            <select class="form-control">
+                                                <option>1000 XP (Master)</option>
+                                                <option selected>2000 XP (Grandmaster)</option>
+                                                <option>Disabled (Manual Only)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="glass settings-card">
+                                    <h3 style="font-size: 1.1rem; margin-bottom: 1.5rem;"><i
+                                            class="fa-solid fa-calendar-days text-primary"></i> Event Defaults</h3>
+                                    <div class="form-grid-2">
+                                        <div class="form-group">
+                                            <label class="form-label" style="font-size: 0.85rem;">Default Max
+                                                Participants</label>
+                                            <input type="number" class="form-control" value="150">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" style="font-size: 0.85rem;">Registration Deadline
+                                                Window</label>
+                                            <select class="form-control">
+                                                <option>24 Hours before event</option>
+                                                <option selected>48 Hours before event</option>
+                                                <option>1 Week before event</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB: Roles (SuperAdmin) -->
+                            <div id="st-roles" class="settings-pane">
+                                <h2 class="settings-pane-title"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Roles & Permissions</span>
+                                    <button class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> New
+                                        Role</button>
+                                </h2>
+
+                                <div class="glass settings-card" style="padding: 0; overflow: hidden;">
+                                    <table class="admin-table permission-matrix">
+                                        <thead>
+                                            <tr>
+                                                <th style="padding-left: 1.5rem;">Role Name</th>
+                                                <th style="text-align: center;">Events</th>
+                                                <th style="text-align: center;">Students</th>
+                                                <th style="text-align: center;">Certs</th>
+                                                <th style="text-align: center;">Settings</th>
+                                                <th style="text-align: right; padding-right: 1.5rem;">Manage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-left: 1.5rem;">
+                                                    <div style="font-weight: 600;">Super Administrator</div>
+                                                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Full
+                                                        system access</div>
+                                                </td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-check text-success"></i></td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-check text-success"></i></td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-check text-success"></i></td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-check text-success"></i></td>
+                                                <td style="text-align: right; padding-right: 1.5rem; opacity: 0.5;"><i
+                                                        class="fa-solid fa-lock text-secondary"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-left: 1.5rem;">
+                                                    <div style="font-weight: 600;">Event Organizer</div>
+                                                    <div style="font-size: 0.75rem; color: var(--text-secondary);">
+                                                        Manage events & attendance</div>
+                                                </td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-check text-success"></i></td>
+                                                <td style="text-align: center;"><i class="fa-solid fa-eye text-primary"
+                                                        title="Read Only"></i></td>
+                                                <td style="text-align: center;"><i class="fa-solid fa-xmark text-danger"
+                                                        style="opacity: 0.3;"></i></td>
+                                                <td style="text-align: center;"><i class="fa-solid fa-xmark text-danger"
+                                                        style="opacity: 0.3;"></i></td>
+                                                <td style="text-align: right; padding-right: 1.5rem;">
+                                                    <button class="btn btn-outline btn-sm">Edit</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-left: 1.5rem;">
+                                                    <div style="font-weight: 600;">Academic Dean</div>
+                                                    <div style="font-size: 0.75rem; color: var(--text-secondary);">
+                                                        Oversee certs & students</div>
+                                                </td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-eye text-primary"></i></td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-check text-success"></i></td>
+                                                <td style="text-align: center;"><i
+                                                        class="fa-solid fa-check text-success"></i></td>
+                                                <td style="text-align: center;"><i class="fa-solid fa-xmark text-danger"
+                                                        style="opacity: 0.3;"></i></td>
+                                                <td style="text-align: right; padding-right: 1.5rem;">
+                                                    <button class="btn btn-outline btn-sm">Edit</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Sticky Save Footer (Applies contextually via JS) -->
+                    <div class="settings-save-bar" id="settingsSaveBar">
+                        <span class="text-secondary" style="font-size: 0.9rem;" id="unsavedChangesText">You have unsaved
+                            changes.</span>
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="btn btn-outline" style="border-radius: var(--radius-pill);"
+                                onclick="window.discardSettings()">Discard</button>
+                            <button class="btn btn-primary" style="border-radius: var(--radius-pill);"
+                                id="btnSaveSettings" onclick="window.saveSettings()">Save Changes</button>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Floating Modal Container (For confirm modals inside Admin interface) -->
+                <div id="adminModalOverlay" class="admin-modal-overlay">
+                    <div class="admin-modal-box glass shadow-lg">
+                        <div class="modal-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <h3 id="adminModalTitle">Are you sure?</h3>
+                        <p id="adminModalDesc" class="text-secondary">This action cannot be undone.</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-outline" onclick="window.closeAdminModal()">Cancel</button>
+                            <button class="btn btn-primary btn-danger" id="adminModalConfirmBtn">Yes, Proceed</button>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -971,6 +1568,11 @@
     </div>
 
     <!-- Scripts -->
+    <script src="app.js"></script>
+    <script>
+        // Enforce Admin login
+        AuthManager.guard(['admin']);
+    </script>
     <script src="admin.js"></script>
 </body>
 

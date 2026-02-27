@@ -90,6 +90,18 @@
                             <option value="ECE">Electronics</option>
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-control" required
+                            placeholder="Create a password" style="border-radius: var(--radius-pill);">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-control" required
+                            placeholder="Confirm your password" style="border-radius: var(--radius-pill);">
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg"
@@ -127,12 +139,50 @@
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
             btn.disabled = true;
 
-            setTimeout(() => {
+            const regNumber = document.getElementById('regNumber').value;
+            const studentName = document.getElementById('studentName').value;
+            const email = document.getElementById('email').value;
+            const department = document.getElementById('department').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
-                e.target.reset();
-                showModal('successModal');
-            }, 1500);
+                if (typeof window.showToast === 'function') {
+                    window.showToast("Passwords do not match.", 'error');
+                } else {
+                    alert("Passwords do not match.");
+                }
+                return;
+            }
+
+            const userData = {
+                id: regNumber,
+                name: studentName,
+                email: email,
+                department: department,
+                password: password
+            };
+
+            setTimeout(() => {
+                const response = AuthManager.register(userData);
+
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+
+                if (response.success) {
+                    e.target.reset();
+                    showModal('successModal');
+                } else {
+                    // Show error toast if available, otherwise alert
+                    if (typeof showToast === 'function') {
+                        showToast(response.message, 'error');
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            }, 1000);
         }
     </script>
 </body>

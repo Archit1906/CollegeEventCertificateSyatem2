@@ -158,144 +158,17 @@
             </div>
 
             <!-- Event Grid -->
-            <div class="grid-cards" id="eventGrid">
+            <div class="grid-cards" id="dynamicParticipateGrid">
+                <!-- Dynamically injected events go here -->
+            </div>
 
-                <!-- Card 1 -->
-                <label class="interactive-card glass selectable-card event-tile" data-aos="zoom-in" data-xp="150"
-                    data-category="Technical">
-                    <input type="checkbox" value="National Tech Symposium" data-date="Oct 15, 2026"
-                        data-venue="Main Auditorium">
-                    <div class="checkmark-circle"><i class="fa-solid fa-check"></i></div>
-
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                        <div class="badge badge-tech"><i class="fa-solid fa-microchip"></i> Technical</div>
-                        <div class="xp-badge">+150 XP</div>
-                    </div>
-
-                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; line-height: 1.3; max-width: 85%;">National
-                        Tech Symposium</h3>
-
-                    <div
-                        style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-                        <span><i class="fa-solid fa-fire text-warning"></i> 240 Registered</span>
-                        <span><i class="fa-solid fa-star text-warning"></i> 4.8</span>
-                    </div>
-
-                    <div
-                        style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: var(--radius-md); border-left: 3px solid var(--primary-color);">
-                        <p class="text-secondary"
-                            style="font-size: 0.9rem; margin: 0; display: flex; flex-direction: column; gap: 0.3rem;">
-                            <span><i class="fa-solid fa-calendar-day" style="width: 20px;"></i> Oct 15, 2026</span>
-                            <span><i class="fa-solid fa-location-dot" style="width: 20px;"></i> Main Auditorium</span>
-                            <span class="text-warning" style="font-weight: 500; margin-top: 0.5rem;"><i
-                                    class="fa-solid fa-clock"></i> Starts in 5 Days</span>
-                        </p>
-                    </div>
-                </label>
-
-                <!-- Card 2 -->
-                <label class="interactive-card glass selectable-card event-tile" data-aos="zoom-in" data-aos-delay="100"
-                    data-xp="300" data-category="Technical">
-                    <input type="checkbox" value="Cybersecurity CTF Setup" data-date="Nov 12, 2026"
-                        data-venue="Main Lab Complex">
-                    <div class="checkmark-circle"><i class="fa-solid fa-check"></i></div>
-
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                        <div class="badge badge-tech"><i class="fa-solid fa-shield-halved"></i> Hackathon</div>
-                        <div class="xp-badge glow">+300 XP</div>
-                    </div>
-
-                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; line-height: 1.3; max-width: 85%;">
-                        Cybersecurity CTF Setup</h3>
-
-                    <div
-                        style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-                        <span><i class="fa-solid fa-fire text-warning"></i> 85 Registered</span>
-                        <span><i class="fa-solid fa-star text-warning"></i> 4.9</span>
-                    </div>
-
-                    <div
-                        style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: var(--radius-md); border-left: 3px solid var(--primary-color);">
-                        <p class="text-secondary"
-                            style="font-size: 0.9rem; margin: 0; display: flex; flex-direction: column; gap: 0.3rem;">
-                            <span><i class="fa-solid fa-calendar-day" style="width: 20px;"></i> Nov 12, 2026</span>
-                            <span><i class="fa-solid fa-location-dot" style="width: 20px;"></i> Main Lab Complex</span>
-                            <span class="text-success" style="font-weight: 500; margin-top: 0.5rem;"><i
-                                    class="fa-solid fa-ticket"></i> Registration Open</span>
-                        </p>
-                    </div>
-                </label>
-
-                <!-- Card 3 -->
-                <label class="interactive-card glass selectable-card event-tile" data-aos="zoom-in" data-aos-delay="200"
-                    data-xp="200" data-category="Workshop">
-                    <input type="checkbox" value="AI & ML Workshop" data-date="Oct 20, 2026"
-                        data-venue="Lab 4, Block IT">
-                    <div class="checkmark-circle"><i class="fa-solid fa-check"></i></div>
-
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                        <div class="badge badge-workshop"><i class="fa-solid fa-laptop-code"></i> Workshop</div>
-                        <div class="xp-badge">+200 XP</div>
-                    </div>
-
-                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; line-height: 1.3; max-width: 85%;">AI & ML Deep
-                        Dive</h3>
-
-                    <div
-                        style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-                        <span><i class="fa-solid fa-fire text-warning"></i> 150 Registered</span>
-                        <span><i class="fa-solid fa-star text-warning"></i> 4.5</span>
-                    </div>
-
-                    <div
-                        style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: var(--radius-md); border-left: 3px solid #10b981;">
-                        <p class="text-secondary"
-                            style="font-size: 0.9rem; margin: 0; display: flex; flex-direction: column; gap: 0.3rem;">
-                            <span><i class="fa-solid fa-calendar-day" style="width: 20px;"></i> Oct 20, 2026</span>
-                            <span><i class="fa-solid fa-location-dot" style="width: 20px;"></i> Lab 4, Block IT</span>
-                            <span class="text-warning" style="font-weight: 500; margin-top: 0.5rem;"><i
-                                    class="fa-solid fa-clock"></i> Starts in 10 Days</span>
-                        </p>
-                    </div>
-                </label>
-
-                <!-- Card 4 -->
-                <label class="interactive-card glass selectable-card event-tile" data-aos="zoom-in" data-aos-delay="300"
-                    data-xp="100" data-category="Cultural">
-                    <input type="checkbox" value="Spring Fest 2026" data-date="Nov 05, 2026"
-                        data-venue="Open Air Theatre">
-                    <div class="checkmark-circle"><i class="fa-solid fa-check"></i></div>
-
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                        <div class="badge badge-culture"><i class="fa-solid fa-palette"></i> Cultural</div>
-                        <div class="xp-badge">+100 XP</div>
-                    </div>
-
-                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; line-height: 1.3; max-width: 85%;">Spring Fest
-                        2026</h3>
-
-                    <div
-                        style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-                        <span><i class="fa-solid fa-fire text-warning"></i> 520 Registered</span>
-                        <span><i class="fa-solid fa-star text-warning"></i> 4.9</span>
-                    </div>
-
-                    <div
-                        style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: var(--radius-md); border-left: 3px solid #ec4899;">
-                        <p class="text-secondary"
-                            style="font-size: 0.9rem; margin: 0; display: flex; flex-direction: column; gap: 0.3rem;">
-                            <span><i class="fa-solid fa-calendar-day" style="width: 20px;"></i> Nov 05, 2026</span>
-                            <span><i class="fa-solid fa-location-dot" style="width: 20px;"></i> Open Air Theatre</span>
-                            <span class="text-success" style="font-weight: 500; margin-top: 0.5rem;"><i
-                                    class="fa-solid fa-ticket"></i> Registration Open</span>
-                        </p>
-                    </div>
-                </label>
-
+            <!-- Empty State (Hidden) -->
+            <div id="participateEmptyState" style="display: none; text-align: center; padding: 4rem 2rem;">
+                <i class="fa-solid fa-folder-open"
+                    style="font-size: 4rem; color: var(--text-secondary); margin-bottom: 1.5rem;"></i>
+                <h3 style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem;">No Events Available
+                </h3>
+                <p style="color: var(--text-secondary);">There are currently no active events to participate in.</p>
             </div>
         </section>
 
@@ -409,7 +282,6 @@
 
 
         // 2. Event Selection & Gamification Logic
-        const checkboxes = document.querySelectorAll('.selectable-card input[type="checkbox"]');
         const stickyBar = document.getElementById('stickyConfirm');
         const selCount = document.getElementById('selCount');
         const summaryList = document.getElementById('summaryList');
@@ -421,12 +293,19 @@
         let totalXP = 0;
         const XP_MAX = 1000; // Cap for the visual circle
 
-        checkboxes.forEach(box => {
-            box.addEventListener('change', function (e) {
-                const card = this.closest('.selectable-card');
-                const xpVal = parseInt(card.getAttribute('data-xp'));
+        document.addEventListener('change', function (e) {
+            if (e.target.matches('.selectable-card input[type="checkbox"]')) {
+                const box = e.target;
+                const card = box.closest('.selectable-card');
+                let xpVal = parseInt(card.getAttribute('data-xp')) || 0;
 
-                if (this.checked) {
+                // Apply Global XP Multiplier
+                if (typeof SettingsManager !== 'undefined' && SettingsManager.settings) {
+                    const multiplier = SettingsManager.settings.configuration.globalXpMultiplier || 1.0;
+                    xpVal = Math.round(xpVal * multiplier);
+                }
+
+                if (box.checked) {
                     card.classList.add('selected');
                     totalXP += xpVal;
                     createFloatingXP(e.clientX, e.clientY, xpVal);
@@ -435,7 +314,7 @@
                     totalXP -= xpVal;
                 }
                 updateStickyBar();
-            });
+            }
         });
 
         function createFloatingXP(x, y, amount) {
@@ -478,7 +357,6 @@
 
         // 3. Filter Chips Logic
         const filterChips = document.querySelectorAll('.filter-chips .chip');
-        const eventTiles = document.querySelectorAll('.event-tile');
 
         filterChips.forEach(chip => {
             chip.addEventListener('click', function () {
@@ -487,14 +365,19 @@
                 this.classList.add('active');
 
                 const filterText = this.textContent.trim();
+                const eventTiles = document.querySelectorAll('.event-tile');
 
                 eventTiles.forEach(tile => {
                     const category = tile.getAttribute('data-category');
-                    if (filterText === 'All Events' || filterText.includes(category)) {
+                    if (filterText === 'All Events') {
                         tile.style.display = 'flex';
-                    } else if (filterText === 'High XP' && parseInt(tile.getAttribute('data-xp')) >= 200) {
+                    } else if (filterText.includes('Technical') && (category === 'Technical' || category === 'Workshop')) {
                         tile.style.display = 'flex';
-                    } else if (filterText === 'Upcoming' && tile.querySelector('.text-warning')) {
+                    } else if (filterText.includes('Cultural') && category === 'Cultural') {
+                        tile.style.display = 'flex';
+                    } else if (filterText.includes('High XP') && parseInt(tile.getAttribute('data-xp')) >= 200) {
+                        tile.style.display = 'flex';
+                    } else if (filterText.includes('Upcoming') && tile.querySelector('.text-warning')) {
                         tile.style.display = 'flex';
                     } else {
                         tile.style.display = 'none';

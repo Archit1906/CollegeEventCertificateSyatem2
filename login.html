@@ -105,20 +105,48 @@
         function handleLogin(e) {
             e.preventDefault();
             const id = document.getElementById('loginId').value.toLowerCase();
+            const pass = document.getElementById('password').value;
 
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
             btn.disabled = true;
 
-            // Mock auth logic
             setTimeout(() => {
-                if (id === 'admin') {
-                    window.location.href = 'admin.html';
+                const response = AuthManager.login(id, pass);
+
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+
+                if (response.success) {
+                    if (response.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = `student-dashboard.html?id=${response.id}`;
+                    }
                 } else {
-                    window.location.href = 'student-dashboard.html';
+                    // Show error toast if available, otherwise native alert
+                    if (typeof window.showToast === 'function') {
+                        window.showToast(response.message, 'error');
+                    } else {
+                        // Create a simple error message in DOM since login doesn't have showToast yet
+                        const existingErr = document.getElementById('login-err');
+                        if (existingErr) existingErr.remove();
+
+                        const err = document.createElement('div');
+                        err.id = 'login-err';
+                        err.style.color = '#ef4444';
+                        err.style.padding = '0.5rem';
+                        err.style.marginBottom = '1rem';
+                        err.style.background = 'rgba(239, 68, 68, 0.1)';
+                        err.style.borderRadius = 'var(--radius-sm)';
+                        err.style.textAlign = 'center';
+                        err.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${response.message}`;
+
+                        document.getElementById('loginForm').prepend(err);
+                    }
                 }
-            }, 1000);
+            }, 600);
         }
     </script>
 </body>
