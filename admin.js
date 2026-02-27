@@ -72,6 +72,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Settings Tabs Navigation ---
+    const settingsTabs = document.querySelectorAll('.settings-tab-link');
+    const settingsPanes = document.querySelectorAll('.settings-pane');
+
+    settingsTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = tab.getAttribute('data-tab');
+
+            settingsTabs.forEach(t => t.classList.remove('active'));
+            settingsPanes.forEach(p => p.style.display = 'none');
+
+            tab.classList.add('active');
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) targetPane.style.display = 'block';
+        });
+    });
+
+    // --- Export Functions ---
+    window.exportStudentsCSV = function () {
+        window.showToast('Exporting Students as CSV...', 'success');
+    };
+    window.exportStudentsExcel = function () {
+        window.showToast('Exporting Students as Excel...', 'success');
+    };
+    window.printStudentsData = function () {
+        window.print();
+    };
+    window.exportStudentsReport = function () {
+        window.showToast('Generating Full Student Report...', 'success');
+    };
+
     // --- Chart.js Rendering (Dashboard) ---
     window.renderCharts = function () {
         const isDark = document.body.getAttribute('data-theme') === 'dark';
