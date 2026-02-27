@@ -360,7 +360,8 @@
                                                         style="color: #cbd5e1; margin-left: 0.5rem;"></i></th>
                                                 <th class="sortable" data-sort="status" style="cursor: pointer;">Status
                                                     <i class="fa-solid fa-sort"
-                                                        style="color: #cbd5e1; margin-left: 0.5rem;"></i></th>
+                                                        style="color: #cbd5e1; margin-left: 0.5rem;"></i>
+                                                </th>
                                                 <th style="text-align: right; padding-right: 1.5rem;">Actions</th>
                                             </tr>
                                         </thead>
@@ -713,70 +714,139 @@
                 <!-- ================= MODULE: EVENTS ================= -->
                 <section id="eventsModule" class="module-section">
                     <div
-                        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
                         <div>
-                            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Event Logistics Hub</h1>
-                            <p class="text-secondary">Track ongoing events, manage seating, and upload banners.</p>
+                            <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700;">Event Control
+                                Center</h1>
+                            <p class="text-secondary" style="font-size: 1.05rem;">Publish new events, manage existing
+                                logistics, and track capacities.</p>
                         </div>
                     </div>
-                    <div class="grid-cards" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
 
-                        <div class="interactive-card glass">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                                <span class="status-badge success">Ongoing</span>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <button class="action-btn edit"
-                                        onclick="window.openDrawer('Edit Event: Tech Symposium')"><i
-                                            class="fa-solid fa-pen"></i></button>
-                                    <button class="action-btn"><i class="fa-solid fa-copy"></i></button>
-                                </div>
-                            </div>
-                            <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">National Tech Symposium</h3>
-                            <p class="text-secondary" style="font-size: 0.9rem; margin-bottom: 1rem;"><i
-                                    class="fa-regular fa-calendar"></i> Oct 15, 2026</p>
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
 
-                            <div style="margin-bottom: 1rem;">
+                        <!-- CREATE NEW EVENT FORM -->
+                        <div class="glass"
+                            style="padding: 2rem; border-radius: var(--radius-lg); position: sticky; top: 100px; height: fit-content;">
+                            <h2
+                                style="font-size: 1.3rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
                                 <div
-                                    style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 600;">
-                                    <span>Seats Filled</span>
-                                    <span style="color: var(--primary-color);">420 / 500</span>
+                                    style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fa-solid fa-plus"></i>
                                 </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill"
-                                        style="width: 84%; background: var(--primary-color);"></div>
+                                Create New Event
+                            </h2>
+
+                            <form id="createEventForm">
+                                <div class="form-floating mb-4">
+                                    <input type="text" id="evTitle" class="form-control" placeholder="Event Title"
+                                        required>
+                                    <label for="evTitle">Event Title</label>
                                 </div>
-                            </div>
-                            <button class="btn btn-outline" style="width: 100%; border-radius: var(--radius-pill);"><i
-                                    class="fa-solid fa-eye"></i> View Registrations</button>
+
+                                <div class="form-floating mb-4">
+                                    <textarea id="evDesc" class="form-control" placeholder="Description" rows="3"
+                                        style="height: auto; padding-top: 1.5rem;" required></textarea>
+                                    <label for="evDesc">Short Description</label>
+                                </div>
+
+                                <div
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                    <div class="form-group" style="margin: 0;">
+                                        <label class="form-label text-secondary"
+                                            style="font-size: 0.8rem;">Category</label>
+                                        <select id="evCat" class="form-control" required
+                                            style="border-radius: var(--radius-md);">
+                                            <option value="Technical">Technical</option>
+                                            <option value="Cultural">Cultural</option>
+                                            <option value="Workshop">Workshop</option>
+                                            <option value="Hackathon">Hackathon</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-floating" style="margin: 0;">
+                                        <input type="number" id="evXP" class="form-control" placeholder="XP Reward"
+                                            required min="50" max="1000">
+                                        <label for="evXP">XP Reward</label>
+                                    </div>
+                                </div>
+
+                                <div
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                    <div class="form-floating" style="margin: 0;">
+                                        <input type="datetime-local" id="evDate" class="form-control"
+                                            placeholder="Date & Time" required>
+                                        <label for="evDate">Launch Date & Time</label>
+                                    </div>
+                                    <div class="form-floating" style="margin: 0;">
+                                        <input type="number" id="evSeats" class="form-control" placeholder="Max Seats"
+                                            required min="10" max="5000">
+                                        <label for="evSeats">Max Participants</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-floating mb-4" style="margin: 0;">
+                                    <input type="text" id="evVenue" class="form-control" placeholder="Venue Location"
+                                        required>
+                                    <label for="evVenue">Venue Location</label>
+                                </div>
+
+                                <hr style="border-color: var(--card-border); margin: 1.5rem 0;">
+
+                                <!-- Advanced Toggles -->
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <span style="font-weight: 500; font-size: 0.95rem;">Highlight as Featured
+                                        Event</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="evFeatured">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary"
+                                    style="width: 100%; justify-content: center; margin-top: 1rem; padding: 1rem; border-radius: var(--radius-pill);">
+                                    Publish Event <i class="fa-solid fa-paper-plane" style="margin-left: 0.5rem;"></i>
+                                </button>
+                            </form>
                         </div>
 
-                        <div class="interactive-card glass">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                                <span class="status-badge info">Upcoming</span>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <button class="action-btn edit"
-                                        onclick="window.openDrawer('Edit Event: AI & ML')"><i
-                                            class="fa-solid fa-pen"></i></button>
-                                    <button class="action-btn"><i class="fa-solid fa-copy"></i></button>
+                        <!-- MANAGE EVENTS DATA GRID -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="grid-toolbar"
+                                style="border-radius: var(--radius-lg); padding: 1rem 1.5rem; background: var(--admin-surface);">
+                                <div style="position: relative; width: 350px;">
+                                    <i class="fa-solid fa-magnifying-glass"
+                                        style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                                    <input type="text" id="eventSearchInput" placeholder="Search events..."
+                                        style="width: 100%; padding: 0.7rem 1rem 0.7rem 3rem; border-radius: var(--radius-pill); border: 1px solid var(--card-border); background: var(--bg-color); color: var(--text-primary);">
                                 </div>
-                            </div>
-                            <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">AI & ML Deep Dive</h3>
-                            <p class="text-secondary" style="font-size: 0.9rem; margin-bottom: 1rem;"><i
-                                    class="fa-regular fa-calendar"></i> Oct 20, 2026</p>
 
-                            <div style="margin-bottom: 1rem;">
-                                <div
-                                    style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 600;">
-                                    <span>Seats Filled</span>
-                                    <span style="color: var(--color-warning);">145 / 150</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill"
-                                        style="width: 96%; background: var(--color-warning);"></div>
+                                <div class="filter-chips" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                    <button class="chip active">All Events</button>
+                                    <button class="chip">Upcoming</button>
+                                    <button class="chip">Completed</button>
                                 </div>
                             </div>
-                            <button class="btn btn-outline" style="width: 100%; border-radius: var(--radius-pill);"><i
-                                    class="fa-solid fa-eye"></i> View Registrations</button>
+
+                            <div class="data-grid-wrap shadow-soft"
+                                style="border: none; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);">
+                                <div style="overflow-x: auto;">
+                                    <table class="admin-table smart-table" id="adminEventsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Event Log</th>
+                                                <th>Category & XP</th>
+                                                <th>Capacity & Date</th>
+                                                <th>Status</th>
+                                                <th style="text-align: right;">Settings</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="adminEventsTbody">
+                                            <!-- Dynamic Rows injected via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

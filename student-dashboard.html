@@ -15,9 +15,10 @@
 
 <body>
 
-    <div class="blob-bg">
-        <div class="blob blob-1" style="background: var(--accent-color); opacity: 0.15"></div>
-    </div>
+    <!-- Animated Mesh Gradient Underlay -->
+    <div class="mesh-bg"></div>
+    <!-- tsparticles container -->
+    <div id="tsparticles" style="position: absolute; top:0; left:0; width: 100%; height: 100%; z-index: -1;"></div>
 
     <nav class="navbar" id="navbar">
         <div class="nav-brand">
@@ -54,178 +55,375 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;"
             data-aos="fade-down">
             <div>
-                <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">Command Center 🚀</h1>
+                <h1
+                    style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; text-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+                    Command Center 🚀</h1>
                 <p class="text-secondary" style="font-size: 1.1rem;">Track your progress, unlock achievements, and
-                    download certificates.</p>
+                    dominate the leaderboard.</p>
             </div>
-            <a href="events.html" class="btn btn-primary btn-lg"><i class="fa-solid fa-compass"
-                    style="margin-right: 0.8rem;"></i> Discover More Events</a>
+            <a href="events.html" class="btn btn-primary btn-lg" style="box-shadow: 0 0 20px rgba(99,102,241,0.4);"><i
+                    class="fa-solid fa-compass" style="margin-right: 0.8rem;"></i> Discover More Events</a>
         </div>
 
-        <!-- Gamification Overview -->
-        <div class="glass" style="padding: 2.5rem; border-radius: var(--radius-lg); margin-bottom: 3rem;"
+        <!-- 🏆 HERO XP SYSTEM -->
+        <div class="glass glass-hero"
+            style="padding: 3rem; border-radius: 24px; margin-bottom: 3rem; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);"
             data-aos="fade-up">
-            <div style="display: flex; gap: 3rem; flex-wrap: wrap; align-items: center;">
+            <!-- Subtle Radial Glow behind XP -->
+            <div
+                style="position: absolute; top: -50%; left: 10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;">
+            </div>
 
-                <!-- Level & XP -->
+            <div
+                style="display: flex; gap: 3rem; flex-wrap: wrap; align-items: center; position: relative; z-index: 2;">
+
+                <!-- Avatar Profile -->
+                <div style="position: relative;">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff&size=120"
+                        style="border-radius: 50%; box-shadow: 0 10px 30px rgba(99,102,241,0.4); border: 4px solid var(--admin-surface);">
+                    <div class="rank-badge rank-1"
+                        style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; font-size: 0.9rem; border: 2px solid var(--admin-surface);">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                </div>
+
+                <!-- Level & Elite XP -->
                 <div style="flex: 1; min-width: 300px;">
                     <div
                         style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
-                        <h3 style="font-size: 1.8rem; margin: 0;">Level 12 <span
-                                style="font-size: 1rem; font-weight: 500; color: var(--text-secondary); margin-left: 0.5rem;">(Tech
-                                Lead)</span></h3>
-                        <span style="font-weight: 700; color: var(--primary-color);">1,450 / 2,000 XP</span>
+                        <h3 style="font-size: 2.2rem; margin: 0; text-shadow: 0 2px 10px rgba(255,255,255,0.1);">Level
+                            12 <span class="badge badge-tech glow-pulse"
+                                style="font-size: 0.9rem; margin-left: 0.8rem; vertical-align: middle;">Tech Lead</span>
+                        </h3>
+                        <span
+                            style="font-weight: 700; color: var(--primary-color); font-size: 1.2rem; text-shadow: 0 0 10px rgba(99,102,241,0.5);">1,450
+                            / 2,000 XP</span>
                     </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" data-progress="72.5"></div>
+
+                    <!-- Advanced Progress Bar -->
+                    <div class="progress-bar-container"
+                        style="height: 16px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); overflow: visible; position: relative; margin: 1.5rem 0;">
+                        <div class="progress-bar-fill progress-glow" id="heroXpBar"
+                            style="width: 0%; height: 100%; border-radius: 12px; position: relative; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); box-shadow: 0 0 20px rgba(99,102,241,0.6);">
+                            <!-- Progress Head Glow -->
+                            <div
+                                style="position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 24px; height: 24px; background: white; border-radius: 50%; box-shadow: 0 0 15px white, 0 0 30px var(--primary-color);">
+                            </div>
+                        </div>
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--text-secondary);"><i
-                            class="fa-solid fa-arrow-trend-up"></i> Top 5% of your department this semester</p>
+
+                    <div
+                        style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--text-secondary);">
+                        <span><i class="fa-solid fa-bolt text-warning"></i> 550 XP to Level 13</span>
+                        <span><i class="fa-solid fa-arrow-trend-up text-success"></i> Top 5% of Department</span>
+                    </div>
                 </div>
-
-                <!-- Earned Badges -->
-                <div style="flex: 1; display: flex; gap: 1.5rem; justify-content: flex-end; min-width: 250px;">
-
-                    <div style="text-align: center;" title="Gold Participant">
-                        <div
-                            style="width: 70px; height: 70px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin: 0 auto 0.5rem auto; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);">
-                            <i class="fa-solid fa-crown"></i>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center;" title="Tech Star">
-                        <div
-                            style="width: 70px; height: 70px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin: 0 auto 0.5rem auto; box-shadow: 0 5px 15px rgba(29, 78, 216, 0.4);">
-                            <i class="fa-solid fa-code"></i>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center; opacity: 0.3; filter: grayscale(100%);"
-                        title="Cultural Champ (Locked)">
-                        <div
-                            style="width: 70px; height: 70px; background: linear-gradient(135deg, #ec4899, #be185d); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin: 0 auto 0.5rem auto;">
-                            <i class="fa-solid fa-lock"></i>
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem;">
+        <!-- 🎮 GRID SPLIT: GAMIFICATION + MY SCHEDULE -->
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 3rem; margin-bottom: 3rem;">
 
-            <!-- My Schedule -->
-            <div data-aos="fade-right">
-                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;"><i
-                        class="fa-regular fa-calendar-check text-primary"></i> My Schedule</h2>
+            <!-- Left Col: Badges & Radar -->
+            <div style="display: flex; flex-direction: column; gap: 3rem;">
 
-                <div class="glass"
-                    style="padding: 1.5rem; border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 1rem;">
+                <!-- Achievements Grid -->
+                <div data-aos="fade-right">
+                    <h2
+                        style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <i class="fa-solid fa-medal text-warning"></i> Gamification Achievements
+                    </h2>
 
-                    <div
-                        style="padding: 1.5rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.03); border: 1px solid var(--card-border); position: relative; overflow: hidden;">
+                    <div class="glass" style="padding: 2rem; border-radius: var(--radius-lg);">
                         <div
-                            style="position: absolute; left: 0; top: 0; height: 100%; width: 6px; background: var(--primary-color);">
-                        </div>
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                            <h4 style="margin: 0; font-size: 1.2rem;">AI & ML Deep Dive</h4>
-                            <span class="badge badge-workshop">Upcoming</span>
-                        </div>
-                        <p class="text-secondary"
-                            style="font-size: 0.95rem; display: flex; gap: 1rem; align-items: center; margin-top: 0.8rem;">
-                            <span><i class="fa-regular fa-calendar"></i> Oct 20, 2026</span>
-                            <span><i class="fa-regular fa-clock"></i> 10:00 AM</span>
-                        </p>
-                    </div>
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1.5rem;">
 
-                    <div
-                        style="padding: 1.5rem; border-radius: var(--radius-md); background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2); position: relative; overflow: hidden;">
-                        <div
-                            style="position: absolute; left: 0; top: 0; height: 100%; width: 6px; background: #10b981;">
-                        </div>
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                            <h4 style="margin: 0; font-size: 1.2rem;">National Tech Symposium</h4>
-                            <span class="badge"
-                                style="background: rgba(16,185,129,0.1); color: #10b981;">Completed</span>
-                        </div>
-                        <p class="text-secondary"
-                            style="font-size: 0.95rem; display: flex; gap: 1rem; align-items: center; margin-top: 0.8rem;">
-                            <span><i class="fa-regular fa-calendar"></i> Oct 15, 2026</span>
-                            <span style="color: #10b981; font-weight: 500;"><i class="fa-solid fa-coins"></i> +150
-                                XP</span>
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Certs & Leaderboard -->
-            <div data-aos="fade-left">
-                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;"><i
-                        class="fa-solid fa-ranking-star text-primary"></i> Leaderboard & Rewards</h2>
-
-                <div class="glass" style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem;">
-
-                    <div class="leaderboard-row">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div class="rank-badge rank-1">1</div>
-                            <img src="https://ui-avatars.com/api/?name=Sam+Win&background=000&color=fff"
-                                style="width: 40px; height: 40px; border-radius: 50%;">
-                            <strong style="font-size: 1.1rem;">Sam Winchester</strong>
-                        </div>
-                        <span style="font-weight: 700; color: var(--text-secondary);">3,200 XP</span>
-                    </div>
-
-                    <div class="leaderboard-row">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div class="rank-badge rank-2">2</div>
-                            <img src="https://ui-avatars.com/api/?name=Emma+Stone&background=000&color=fff"
-                                style="width: 40px; height: 40px; border-radius: 50%;">
-                            <strong style="font-size: 1.1rem;">Emma Stone</strong>
-                        </div>
-                        <span style="font-weight: 700; color: var(--text-secondary);">2,850 XP</span>
-                    </div>
-
-                    <div class="leaderboard-row"
-                        style="background: rgba(99,102,241,0.08); border-left: 4px solid var(--primary-color);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div class="rank-badge" style="background: var(--primary-color); color: white;">12</div>
-                            <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff"
-                                style="width: 40px; height: 40px; border-radius: 50%;">
-                            <strong style="font-size: 1.1rem; color: var(--primary-color);">Alex Carter (You)</strong>
-                        </div>
-                        <span style="font-weight: 700; color: var(--primary-color);">1,450 XP</span>
-                    </div>
-
-                </div>
-
-                <div class="glass" style="padding: 1.5rem; border-radius: var(--radius-lg);">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Latest Certificate</h3>
-                    <div
-                        style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid var(--card-border); background: rgba(0,0,0,0.02); border-radius: var(--radius-md);">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <i class="fa-solid fa-file-certificate" style="font-size: 2.5rem; color: #f59e0b;"></i>
-                            <div>
-                                <h4 style="margin: 0;">National Tech Symposium</h4>
-                                <p class="text-secondary" style="font-size: 0.85rem;">Issued: Oct 15, 2026</p>
+                            <!-- Badge 1: Unlocked -->
+                            <div class="achievement-badge unlocked tooltip-wrap" data-tooltip="Attended 5 Tech Events">
+                                <div class="badge-icon"
+                                    style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 0 20px rgba(59,130,246,0.4);">
+                                    <i class="fa-solid fa-code"></i>
+                                </div>
+                                <span>Tech Star</span>
                             </div>
+
+                            <!-- Badge 2: Unlocked -->
+                            <div class="achievement-badge unlocked tooltip-wrap" data-tooltip="Reached Top 5% Globally">
+                                <div class="badge-icon"
+                                    style="background: linear-gradient(135deg, #f59e0b, #b45309); box-shadow: 0 0 20px rgba(245,158,11,0.4);">
+                                    <i class="fa-solid fa-crown"></i>
+                                </div>
+                                <span>Elite 5%</span>
+                            </div>
+
+                            <!-- Badge 3: Unlocked -->
+                            <div class="achievement-badge unlocked tooltip-wrap"
+                                data-tooltip="First to register for an event">
+                                <div class="badge-icon"
+                                    style="background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 0 20px rgba(16,185,129,0.4);">
+                                    <i class="fa-solid fa-dove"></i>
+                                </div>
+                                <span>Early Bird</span>
+                            </div>
+
+                            <!-- Badge 4: Locked -->
+                            <div class="achievement-badge locked tooltip-wrap" data-tooltip="Complete a 24hr Hackathon">
+                                <div class="badge-icon" style="background: #334155;">
+                                    <i class="fa-solid fa-lock" style="opacity: 0.5;"></i>
+                                </div>
+                                <span>Hackathon</span>
+                            </div>
+
+                            <!-- Badge 5: Locked -->
+                            <div class="achievement-badge locked tooltip-wrap" data-tooltip="Attend 3 Cultural Events">
+                                <div class="badge-icon" style="background: #334155;">
+                                    <i class="fa-solid fa-lock" style="opacity: 0.5;"></i>
+                                </div>
+                                <span>Culture Vulture</span>
+                            </div>
+
+                            <!-- Badge 6: Locked -->
+                            <div class="achievement-badge locked tooltip-wrap"
+                                data-tooltip="Maintained active streak for 3 months">
+                                <div class="badge-icon" style="background: #334155;">
+                                    <i class="fa-solid fa-lock" style="opacity: 0.5;"></i>
+                                </div>
+                                <span>Consistent</span>
+                            </div>
+
                         </div>
-                        <a href="certificate.html" class="btn btn-outline"
-                            style="padding: 0.5rem 1rem; border-radius: var(--radius-pill);"><i
-                                class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+
+                <!-- Chart.js Radar Chart (Performance Visuals) -->
+                <div data-aos="fade-up">
+                    <h2
+                        style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <i class="fa-solid fa-chart-pie text-success"></i> Skill Distribution
+                    </h2>
+                    <div class="glass"
+                        style="padding: 2rem; border-radius: var(--radius-lg); height: 380px; display: flex; align-items: center; justify-content: center;">
+                        <canvas id="studentRadarChart"></canvas>
                     </div>
                 </div>
 
             </div>
 
+            <!-- Right Col: Timeline & Smart Insights -->
+            <div style="display: flex; flex-direction: column; gap: 3rem;">
+
+                <!-- Vertical Timeline Schedule -->
+                <div data-aos="fade-left">
+                    <h2
+                        style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <i class="fa-regular fa-calendar-check text-primary"></i> Event Timeline
+                    </h2>
+
+                    <div class="glass" style="padding: 2rem; border-radius: var(--radius-lg);">
+                        <div class="vertical-timeline">
+
+                            <!-- Next Upcoming -->
+                            <div class="timeline-node">
+                                <div class="node-icon pulsing"
+                                    style="background: var(--color-warning); box-shadow: 0 0 15px var(--color-warning);">
+                                </div>
+                                <div class="node-content interactive-card" style="margin-bottom: 0;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                        <h4 style="margin: 0; font-size: 1.1rem;">AI & ML Deep Dive</h4>
+                                        <span class="badge badge-tech">Upcoming</span>
+                                    </div>
+                                    <p class="text-secondary" style="font-size: 0.9rem; margin: 0 0 0.8rem 0;"><i
+                                            class="fa-regular fa-calendar"></i> Oct 20, 2026 • 10:00 AM</p>
+                                    <div
+                                        style="background: rgba(245,158,11,0.1); border-radius: 6px; padding: 0.5rem; text-align: center; color: var(--color-warning); font-weight: 600; font-size: 0.85rem; border: 1px solid rgba(245,158,11,0.2);">
+                                        Starts in 2d 14h 30m
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Completed -->
+                            <div class="timeline-node">
+                                <div class="node-icon" style="background: var(--color-success);"><i
+                                        class="fa-solid fa-check" style="color: white; font-size: 0.6rem;"></i></div>
+                                <div class="node-content"
+                                    style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.1);">
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                        <h4 style="margin: 0; font-size: 1.1rem;">National Tech Symposium</h4>
+                                        <span
+                                            style="color: var(--color-success); font-weight: 600; font-size: 0.85rem;"><i
+                                                class="fa-solid fa-arrow-up"></i> +150 XP</span>
+                                    </div>
+                                    <p class="text-secondary" style="font-size: 0.9rem; margin: 0;"><i
+                                            class="fa-regular fa-calendar"></i> Oct 15, 2026</p>
+                                </div>
+                            </div>
+
+                            <!-- Completed -->
+                            <div class="timeline-node">
+                                <div class="node-icon" style="background: var(--color-success);"><i
+                                        class="fa-solid fa-check" style="color: white; font-size: 0.6rem;"></i></div>
+                                <div class="node-content"
+                                    style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.1);">
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                        <h4 style="margin: 0; font-size: 1.1rem;">WebDev 101 Bootcamp</h4>
+                                        <span
+                                            style="color: var(--color-success); font-weight: 600; font-size: 0.85rem;"><i
+                                                class="fa-solid fa-arrow-up"></i> +120 XP</span>
+                                    </div>
+                                    <p class="text-secondary" style="font-size: 0.9rem; margin: 0;"><i
+                                            class="fa-regular fa-calendar"></i> Sep 28, 2026</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Smart Insights Panel -->
+                <div data-aos="fade-left" data-aos-delay="100">
+                    <h2
+                        style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <i class="fa-solid fa-wand-magic-sparkles text-gradient"></i> AI Insights
+                    </h2>
+
+                    <div class="glass"
+                        style="border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(168,85,247,0.3); background: linear-gradient(180deg, rgba(168,85,247,0.05) 0%, var(--admin-surface) 100%);">
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+
+                            <!-- Insight 1 -->
+                            <div
+                                style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--color-success);">
+                                <div
+                                    style="font-weight: 600; font-size: 0.9rem; color: var(--color-success); margin-bottom: 0.2rem;">
+                                    <i class="fa-solid fa-fire"></i> Hot Streak
+                                </div>
+                                <p style="font-size: 0.85rem; color: var(--text-primary); margin: 0;">You've attended
+                                    events for 3 consecutive months. Great consistency!</p>
+                            </div>
+
+                            <!-- Insight 2 -->
+                            <div
+                                style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--primary-color);">
+                                <div
+                                    style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color); margin-bottom: 0.2rem;">
+                                    <i class="fa-solid fa-bullseye"></i> Goal Within Reach
+                                </div>
+                                <p style="font-size: 0.85rem; color: var(--text-primary); margin: 0;">Attend just 1 more
+                                    Tech event to unlock the "Master Coder" badge.</p>
+                            </div>
+
+                            <!-- Insight 3 -->
+                            <div
+                                style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--color-warning);">
+                                <div
+                                    style="font-weight: 600; font-size: 0.9rem; color: var(--color-warning); margin-bottom: 0.2rem;">
+                                    <i class="fa-solid fa-trophy"></i> Rival Activity
+                                </div>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Sarah Jen is
+                                    catching up, only 40 XP behind you in the leaderboard!</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 🏅 WIDE LEADERBOARD -->
+        <div data-aos="fade-up">
+            <h2
+                style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="fa-solid fa-ranking-star text-primary"></i> Global Leaderboard</span>
+                <span class="badge badge-tech">Department: CSE</span>
+            </h2>
+
+            <div class="glass" style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem;">
+
+                <div class="leaderboard-row" style="background: rgba(245,158,11,0.05); border-left: 4px solid #fbbf24;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="rank-badge"
+                            style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; width: 35px; height: 35px;">
+                            1</div>
+                        <img src="https://ui-avatars.com/api/?name=Sam+Win&background=000&color=fff"
+                            style="width: 45px; height: 45px; border-radius: 50%;">
+                        <div>
+                            <strong style="font-size: 1.1rem; color: #fbbf24;">Sam Winchester</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Senior (Level 20)</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-weight: 800; color: #fbbf24; font-size: 1.2rem;">3,200 XP</span>
+                        <div style="font-size: 0.75rem; color: var(--color-success);"><i
+                                class="fa-solid fa-arrow-up"></i> 120 this week</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-row"
+                    style="background: rgba(156,163,175,0.05); border-left: 4px solid #9ca3af;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="rank-badge"
+                            style="background: linear-gradient(135deg, #9ca3af, #6b7280); color: white; width: 35px; height: 35px;">
+                            2</div>
+                        <img src="https://ui-avatars.com/api/?name=Emma+Stone&background=000&color=fff"
+                            style="width: 45px; height: 45px; border-radius: 50%;">
+                        <div>
+                            <strong style="font-size: 1.1rem; color: #e2e8f0;">Emma Stone</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Sophomore (Level 18)</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-weight: 800; color: #e2e8f0; font-size: 1.2rem;">2,850 XP</span>
+                        <div style="font-size: 0.75rem; color: var(--color-success);"><i
+                                class="fa-solid fa-arrow-up"></i> 80 this week</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-row"
+                    style="background: rgba(99,102,241,0.1); border-left: 4px solid var(--primary-color); box-shadow: inset 0 0 20px rgba(99,102,241,0.1);">
+                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="rank-badge"
+                            style="background: var(--primary-color); color: white; width: 35px; height: 35px; box-shadow: 0 0 15px rgba(99,102,241,0.5);">
+                            12</div>
+                        <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff"
+                            style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color);">
+                        <div>
+                            <strong style="font-size: 1.1rem; color: var(--primary-color);">Alex Carter (You)</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Freshman (Level 12)</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-weight: 800; color: var(--primary-color); font-size: 1.2rem;">1,450 XP</span>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);"><i class="fa-solid fa-minus"></i>
+                            0 this week</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </main>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- tsParticles -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@2/tsparticles.engine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-basic@2/tsparticles.basic.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/tsparticles-interaction-particles-links@2/tsparticles.interaction.particles.links.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-move-base@2/tsparticles.move.base.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-shape-circle@2/tsparticles.shape.circle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-updater-color@2/tsparticles.updater.color.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/tsparticles-updater-opacity@2/tsparticles.updater.opacity.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-updater-size@2/tsparticles.updater.size.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="app.js"></script>
 </body>
 
