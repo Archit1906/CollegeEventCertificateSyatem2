@@ -593,6 +593,10 @@ const EventManager = {
 
   getPublicEvents() {
     return this.events.filter(e => e.visibility === 'Public');
+  },
+
+  getAllEvents() {
+    return this.events;
   }
 };
 
