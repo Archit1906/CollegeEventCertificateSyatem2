@@ -39,9 +39,9 @@
             <button class="theme-toggle" aria-label="Toggle Dark Mode"><i class="fa-solid fa-moon"></i></button>
             <div
                 style="display: flex; align-items: center; gap: 0.5rem; background: var(--card-bg); padding: 0.4rem 1rem 0.4rem 0.4rem; border-radius: var(--radius-pill); border: 1px solid var(--card-border);">
-                <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" alt="Student"
-                    style="width: 36px; height: 36px; border-radius: 50%;">
-                <span style="font-weight: 600; font-size: 0.95rem;">Alex Carter</span>
+                <img src="https://ui-avatars.com/api/?name=Student&background=6366f1&color=fff" alt="Student"
+                    style="width: 36px; height: 36px; border-radius: 50%;" id="studentNavAvatar">
+                <span style="font-weight: 600; font-size: 0.95rem;" id="studentNavName">Student Name</span>
             </div>
             <a href="#" onclick="AuthManager.logout()" class="btn btn-outline"
                 style="padding: 0.5rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
@@ -79,8 +79,9 @@
 
                 <!-- Avatar Profile -->
                 <div style="position: relative;">
-                    <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff&size=120"
-                        style="border-radius: 50%; box-shadow: 0 10px 30px rgba(99,102,241,0.4); border: 4px solid var(--admin-surface);">
+                    <img src="https://ui-avatars.com/api/?name=Student&background=6366f1&color=fff&size=120"
+                        style="border-radius: 50%; box-shadow: 0 10px 30px rgba(99,102,241,0.4); border: 4px solid var(--admin-surface);"
+                        id="studentHeroAvatar">
                     <div class="rank-badge rank-1"
                         style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; font-size: 0.9rem; border: 2px solid var(--admin-surface);">
                         <i class="fa-solid fa-crown"></i>
@@ -91,13 +92,15 @@
                 <div style="flex: 1; min-width: 300px;">
                     <div
                         style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
-                        <h3 style="font-size: 2.2rem; margin: 0; text-shadow: 0 2px 10px rgba(255,255,255,0.1);">Level
-                            12 <span class="badge badge-tech glow-pulse"
-                                style="font-size: 0.9rem; margin-left: 0.8rem; vertical-align: middle;">Tech Lead</span>
+                        <h3 style="font-size: 2.2rem; margin: 0; text-shadow: 0 2px 10px rgba(255,255,255,0.1);"
+                            id="heroLevelText">Level
+                            1 <span class="badge badge-tech glow-pulse"
+                                style="font-size: 0.9rem; margin-left: 0.8rem; vertical-align: middle;"
+                                id="heroRankBadge">Beginner</span>
                         </h3>
-                        <span
-                            style="font-weight: 700; color: var(--primary-color); font-size: 1.2rem; text-shadow: 0 0 10px rgba(99,102,241,0.5);">1,450
-                            / 2,000 XP</span>
+                        <span id="heroXpText"
+                            style="font-weight: 700; color: var(--primary-color); font-size: 1.2rem; text-shadow: 0 0 10px rgba(99,102,241,0.5);">0
+                            / 100 XP</span>
                     </div>
 
                     <!-- Advanced Progress Bar -->
@@ -114,8 +117,10 @@
 
                     <div
                         style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--text-secondary);">
-                        <span><i class="fa-solid fa-bolt text-warning"></i> 550 XP to Level 13</span>
-                        <span><i class="fa-solid fa-arrow-trend-up text-success"></i> Top 5% of Department</span>
+                        <span id="heroXpRemainingText"><i class="fa-solid fa-bolt text-warning"></i> 100 XP to Level
+                            2</span>
+                        <span id="heroRankStatusText"><i class="fa-solid fa-arrow-trend-up text-success"></i> Keep
+                            participating!</span>
                     </div>
                 </div>
             </div>
@@ -220,64 +225,8 @@
                     </h2>
 
                     <div class="glass" style="padding: 2rem; border-radius: var(--radius-lg);">
-                        <div class="vertical-timeline">
-
-                            <!-- Next Upcoming -->
-                            <div class="timeline-node">
-                                <div class="node-icon pulsing"
-                                    style="background: var(--color-warning); box-shadow: 0 0 15px var(--color-warning);">
-                                </div>
-                                <div class="node-content interactive-card" style="margin-bottom: 0;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                                        <h4 style="margin: 0; font-size: 1.1rem;">AI & ML Deep Dive</h4>
-                                        <span class="badge badge-tech">Upcoming</span>
-                                    </div>
-                                    <p class="text-secondary" style="font-size: 0.9rem; margin: 0 0 0.8rem 0;"><i
-                                            class="fa-regular fa-calendar"></i> Oct 20, 2026 • 10:00 AM</p>
-                                    <div
-                                        style="background: rgba(245,158,11,0.1); border-radius: 6px; padding: 0.5rem; text-align: center; color: var(--color-warning); font-weight: 600; font-size: 0.85rem; border: 1px solid rgba(245,158,11,0.2);">
-                                        Starts in 2d 14h 30m
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Completed -->
-                            <div class="timeline-node">
-                                <div class="node-icon" style="background: var(--color-success);"><i
-                                        class="fa-solid fa-check" style="color: white; font-size: 0.6rem;"></i></div>
-                                <div class="node-content"
-                                    style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.1);">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                                        <h4 style="margin: 0; font-size: 1.1rem;">National Tech Symposium</h4>
-                                        <span
-                                            style="color: var(--color-success); font-weight: 600; font-size: 0.85rem;"><i
-                                                class="fa-solid fa-arrow-up"></i> +150 XP</span>
-                                    </div>
-                                    <p class="text-secondary" style="font-size: 0.9rem; margin: 0;"><i
-                                            class="fa-regular fa-calendar"></i> Oct 15, 2026</p>
-                                </div>
-                            </div>
-
-                            <!-- Completed -->
-                            <div class="timeline-node">
-                                <div class="node-icon" style="background: var(--color-success);"><i
-                                        class="fa-solid fa-check" style="color: white; font-size: 0.6rem;"></i></div>
-                                <div class="node-content"
-                                    style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.1);">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                                        <h4 style="margin: 0; font-size: 1.1rem;">WebDev 101 Bootcamp</h4>
-                                        <span
-                                            style="color: var(--color-success); font-weight: 600; font-size: 0.85rem;"><i
-                                                class="fa-solid fa-arrow-up"></i> +120 XP</span>
-                                    </div>
-                                    <p class="text-secondary" style="font-size: 0.9rem; margin: 0;"><i
-                                            class="fa-regular fa-calendar"></i> Sep 28, 2026</p>
-                                </div>
-                            </div>
-
+                        <div class="vertical-timeline" id="dashboardTimeline">
+                            <!-- Dynamic content injected here via JS -->
                         </div>
                     </div>
                 </div>
@@ -389,11 +338,14 @@
                         <div class="rank-badge"
                             style="background: var(--primary-color); color: white; width: 35px; height: 35px; box-shadow: 0 0 15px rgba(99,102,241,0.5);">
                             12</div>
-                        <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff"
-                            style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color);">
+                        <img src="https://ui-avatars.com/api/?name=Student&background=6366f1&color=fff"
+                            style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color);"
+                            id="studentLeaderboardAvatar">
                         <div>
-                            <strong style="font-size: 1.1rem; color: var(--primary-color);">Alex Carter (You)</strong>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Freshman (Level 12)</div>
+                            <strong style="font-size: 1.1rem; color: var(--primary-color);"
+                                id="studentLeaderboardName">Student Name (You)</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);" id="studentLeaderboardLevel">
+                                Freshman (Level 1)</div>
                         </div>
                     </div>
                     <div style="text-align: right;">

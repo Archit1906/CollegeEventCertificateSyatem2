@@ -1175,3 +1175,160 @@ const RegistrationManager = {
 };
 
 RegistrationManager.init();
+
+// =========================================================================
+// STUDENT DASHBOARD MANAGER
+// =========================================================================
+
+const StudentDashboardManager = {
+  init() {
+    if (!window.location.pathname.includes('student-dashboard.html')) return;
+
+    // Ensure data is ready
+    if (!AuthManager.currentUser) {
+      setTimeout(() => this.init(), 100);
+      return;
+    }
+
+    this.renderHeroProfile();
+    this.renderTimeline();
+  },
+
+  renderHeroProfile() {
+    const user = AuthManager.currentUser;
+    const registrations = RegistrationManager.registrations.filter(r => r.studentId === user.id);
+
+    // Simplistic gamification mapping based on attended events + certs
+    let xp = 0;
+    registrations.forEach(r => {
+      if (r.status === 'Attended') xp += 100;
+      if (r.certificateIssued) xp += 150; // Bonus for certs
+    });
+
+    const level = Math.floor(xp / 500) + 1;
+    const nextLevelXp = level * 500;
+    const xpRemaining = nextLevelXp - xp;
+
+    let rankName = "Beginner";
+    let rankColor = "var(--text-secondary)";
+    if (level >= 3) { rankName = "Developer"; rankColor = "var(--primary-color)"; }
+    if (level >= 6) { rankName = "Tech Lead"; rankColor = "var(--color-warning)"; }
+    if (level >= 10) { rankName = "Master Coder"; rankColor = "var(--color-danger)"; }
+
+    // Update DOM Elements
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=6366f1&color=fff&size=120`;
+
+    const heroAvatar = document.getElementById('studentHeroAvatar');
+    if (heroAvatar) heroAvatar.src = avatarUrl;
+
+    const navAvatar = document.getElementById('studentNavAvatar');
+    if (navAvatar) navAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=6366f1&color=fff`;
+
+    const navName = document.getElementById('studentNavName');
+    if (navName) navName.textContent = user.name;
+
+    const leaderboardAvatar = document.getElementById('studentLeaderboardAvatar');
+    if (leaderboardAvatar) leaderboardAvatar.src = avatarUrl;
+
+    const leaderboardName = document.getElementById('studentLeaderboardName');
+    if (leaderboardName) leaderboardName.textContent = `${user.name} (You)`;
+
+    const leaderboardLevel = document.getElementById('studentLeaderboardLevel');
+    if (leaderboardLevel) leaderboardLevel.textContent = `Student (Level ${level})`;
+
+    const heroLevelText = document.getElementById('heroLevelText');
+    if (heroLevelText) {
+      heroLevelText.innerHTML = `Level ${level} <span class="badge badge-tech glow-pulse" style="font-size: 0.9rem; margin-left: 0.8rem; vertical-align: middle; background: ${rankColor}20; color: ${rankColor}; border-color: ${rankColor}40;" id="heroRankBadge">${rankName}</span>`;
+    }
+
+    const heroXpText = document.getElementById('heroXpText');
+    if (heroXpText) heroXpText.textContent = `${xp} / ${nextLevelXp} XP`;
+
+    const heroXpRemainingText = document.getElementById('heroXpRemainingText');
+    if (heroXpRemainingText) heroXpRemainingText.innerHTML = `<i class="fa-solid fa-bolt text-warning"></i> ${xpRemaining} XP to Level ${level + 1}`;
+
+    const heroXpBar = document.getElementById('heroXpBar');
+    if (heroXpBar) {
+      const percentage = (xp / nextLevelXp) * 100;
+      setTimeout(() => heroXpBar.style.width = `${percentage}%`, 500);
+    }
+  },
+
+  renderTimeline() {
+    const timelineContainer = document.getElementById('dashboardTimeline');
+    if (!timelineContainer) return;
+
+    const user = AuthManager.currentUser;
+    const registrations = RegistrationManager.registrations.filter(r => r.studentId === user.id);
+    const allEvents = EventManager.getAllEvents();
+
+    if (registrations.length === 0) {
+      timelineContainer.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">You haven't registered for any events yet.</div>
+      <div style="text-align: center;"><a href="events.html" class="btn btn-outline">Explore Events</a></div>`;
+      return;
+    }
+
+    timelineContainer.innerHTML = '';
+
+    // Sort registrations by event date
+    const enrichedRegs = registrations.map(r => {
+      const evt = allEvents.find(e => e.id === r.eventId);
+      return { ...r, event: evt };
+    }).filter(r => r.event) // exclude if event was deleted
+      .sort((a, b) => new Date(b.event.date) - new Date(a.event.date));
+
+    enrichedRegs.forEach(reg => {
+      const isCompleted = reg.event.status === "Completed";
+      const isAttended = reg.status === "Attended";
+
+      let nodeHtml = '';
+
+      if (!isCompleted) {
+        // Upcoming Event Mapping
+        nodeHtml = `
+          <div class="timeline-node">
+              <div class="node-icon pulsing" style="background: var(--color-warning); box-shadow: 0 0 15px var(--color-warning);"></div>
+              <div class="node-content interactive-card" style="margin-bottom: 0;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                      <h4 style="margin: 0; font-size: 1.1rem;">${reg.event.title}</h4>
+                      <span class="badge badge-tech">Upcoming</span>
+                  </div>
+                  <p class="text-secondary" style="font-size: 0.9rem; margin: 0 0 0.8rem 0;"><i class="fa-regular fa-calendar"></i> ${reg.event.date}</p>
+                  <div style="background: rgba(245,158,11,0.1); border-radius: 6px; padding: 0.5rem; text-align: center; color: var(--color-warning); font-weight: 600; font-size: 0.85rem; border: 1px solid rgba(245,158,11,0.2);">
+                      Registered & Ready!
+                  </div>
+              </div>
+          </div>
+        `;
+      } else {
+        // Completed Event Mapping
+        let infoBadge = `<span style="color: var(--color-success); font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-arrow-up"></i> +${isAttended ? 100 : 0} XP</span>`;
+        let certBtn = '';
+
+        if (reg.certificateIssued) {
+          infoBadge = `<span style="color: var(--color-info); font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-file-certificate"></i> Certified</span>`;
+          certBtn = `<a href="certificate.html?studentId=${reg.studentId}&eventId=${reg.eventId}" target="_blank" class="btn btn-outline btn-sm" style="margin-top: 0.8rem; border-color: var(--color-info); color: var(--color-info); width: 100%;">View Certificate <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+        }
+
+        nodeHtml = `
+          <div class="timeline-node">
+              <div class="node-icon" style="background: var(--color-success);"><i class="fa-solid fa-check" style="color: white; font-size: 0.6rem;"></i></div>
+              <div class="node-content" style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.1);">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                      <h4 style="margin: 0; font-size: 1.1rem;">${reg.event.title}</h4>
+                      ${infoBadge}
+                  </div>
+                  <p class="text-secondary" style="font-size: 0.9rem; margin: 0;"><i class="fa-regular fa-calendar"></i> ${reg.event.date}</p>
+                  ${certBtn}
+              </div>
+          </div>
+        `;
+      }
+      timelineContainer.insertAdjacentHTML('beforeend', nodeHtml);
+    });
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  StudentDashboardManager.init();
+});

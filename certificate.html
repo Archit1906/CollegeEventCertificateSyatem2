@@ -556,17 +556,17 @@
 
                 <p class="cert-body-text">This is proudly presented to</p>
 
-                <div class="cert-name">Alex Carter</div>
+                <div class="cert-name" id="certStudentName">Student Name</div>
 
                 <p class="cert-body-text" style="max-width: 650px; line-height: 1.6;">
                     For outstanding dedication, active engagement, and successful completion of all technical
                     requirements in the
                 </p>
 
-                <h2 class="cert-event">National Tech Symposium 2026</h2>
+                <h2 class="cert-event" id="certEventTitle">Event Title</h2>
 
-                <p class="cert-body-text" style="font-size: 0.95rem;">
-                    Conducted on <strong>October 15, 2026</strong> at the Main Auditorium, organized by the Department
+                <p class="cert-body-text" style="font-size: 0.95rem;" id="certEventDateText">
+                    Conducted on <strong>Event Date</strong> at the Main Auditorium, organized by the Department
                     of Computer Science.
                 </p>
 
@@ -602,7 +602,35 @@
         </div>
     </div>
 
+    <script src="app.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const studentId = params.get('studentId');
+            const eventId = params.get('eventId');
+
+            if (studentId && eventId) {
+                // We must rely on app.js loaded data (RegistrationManager)
+                // Need to delay slightly just in case app.js initialization takes a moment, though it shouldn't
+                setTimeout(() => {
+                    const reg = RegistrationManager.registrations.find(r => r.studentId === studentId && r.eventId === eventId);
+
+                    if (reg && reg.certificateIssued) {
+                        const allEvents = EventManager.getAllEvents();
+                        const evt = allEvents.find(e => e.id === eventId);
+
+                        document.getElementById('certStudentName').innerText = reg.studentName;
+                        if (evt) {
+                            document.getElementById('certEventTitle').innerText = evt.title;
+                            document.getElementById('certEventDateText').innerHTML = `Conducted on <strong>${evt.date}</strong> at the Main Auditorium, organized by the Department of Computer Science.`;
+                        }
+                    } else {
+                        document.body.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:100vh; color:white; background:#111; font-family:sans-serif;"><h1>Certificate could not be verified or does not exist.</h1></div>';
+                    }
+                }, 100);
+            }
+        });
+
         // Fire elegant gold/blue confetti when window loads
         window.addEventListener('load', () => {
             setTimeout(() => {

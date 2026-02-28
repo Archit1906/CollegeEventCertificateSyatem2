@@ -1142,33 +1142,61 @@ window.renderModuleGrids = function () {
     }
 
     // 2. Certificates Module binding
+    window.renderAdminCertificates();
+};
+
+window.renderAdminCertificates = function () {
     const certsTbody = document.querySelector('#certificatesModule tbody');
-    if (certsTbody) {
-        certsTbody.innerHTML = '';
-        let certCount = 1;
+    if (!certsTbody) return;
 
-        // Loop events that are completed and spawn a couple records
-        events.filter(e => e.status === 'Completed').forEach(evt => {
-            const stu = studentData[certCount % studentData.length];
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="font-family: monospace; color: var(--text-secondary);">CERT-9${0 + certCount}4A-X</td>
-                <td>${stu.name}</td>
-                <td>${evt.title}</td>
-                <td><span class="status-badge success">Issued</span></td>
-                <td style="text-align: right;">
-                    <a href="certificate.html" target="_blank" class="action-btn edit" title="Preview"><i class="fa-solid fa-eye"></i></a>
-                    <button class="action-btn" style="color: var(--color-info);" title="Email"><i class="fa-solid fa-envelope"></i></button>
-                    <button class="action-btn delete" title="Revoke" onclick="window.showToast('Certificate Revoked.', 'error'); this.closest('tr').style.opacity='0.5';"><i class="fa-solid fa-ban"></i></button>
-                </td>
-             `;
-            certsTbody.appendChild(tr);
-            certCount++;
+    certsTbody.innerHTML = '';
+
+    if (typeof RegistrationManager === 'undefined' || typeof EventManager === 'undefined') {
+        certsTbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">Dependencies not loaded.</td></tr>`;
+        return;
+    }
+
+    const allEvents = EventManager.getAllEvents();
+    const issuedCerts = RegistrationManager.registrations.filter(r => r.certificateIssued);
+
+    if (issuedCerts.length === 0) {
+        certsTbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No certificates have been issued yet.</td></tr>`;
+        return;
+    }
+
+    issuedCerts.forEach((cert, index) => {
+        const evt = allEvents.find(e => e.id === cert.eventId);
+        const eventTitle = evt ? evt.title : "Unknown Event";
+        // Create deterministic cert ID based on studentid and eventid
+        const certId = `CERT-${cert.eventId.replace('evt_', '')}-${cert.studentId.substring(0, 4).toUpperCase()}`;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-family: monospace; color: var(--text-secondary);">${certId}</td>
+            <td>${cert.studentName}</td>
+            <td>${eventTitle}</td>
+            <td><span class="status-badge success">Issued</span></td>
+            <td style="text-align: right;">
+                <a href="certificate.html?studentId=${cert.studentId}&eventId=${cert.eventId}" target="_blank" class="action-btn edit" title="Preview"><i class="fa-solid fa-eye"></i></a>
+                <button class="action-btn" style="color: var(--color-info);" title="Email"><i class="fa-solid fa-envelope"></i></button>
+                <button class="action-btn delete" title="Revoke" onclick="window.revokeCertificate('${cert.studentId}', '${cert.eventId}', this)"><i class="fa-solid fa-ban"></i></button>
+            </td>
+        `;
+        certsTbody.appendChild(tr);
+    });
+};
+
+window.revokeCertificate = function (studentId, eventId, btnElem) {
+    if (window.triggerConfirmModal) {
+        window.triggerConfirmModal('Revoke Certificate?', 'This will permanently remove the certificate from the student dashboard.', () => {
+            const reg = RegistrationManager.registrations.find(r => r.studentId === studentId && r.eventId === eventId);
+            if (reg) {
+                reg.certificateIssued = false;
+                RegistrationManager.saveRegistrations();
+                btnElem.closest('tr').remove();
+                if (window.showToast) window.showToast('Certificate Revoked successfully.', 'error');
+            }
         });
-
-        if (certsTbody.innerHTML === '') {
-            certsTbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No completed events to issue certificates from.</td></tr>`;
-        }
     }
 };
 
@@ -1417,9 +1445,28 @@ const AttendanceManager = {
         const autoIssueBtn = document.getElementById('btnAutoIssueCerts');
         if (autoIssueBtn) {
             autoIssueBtn.addEventListener('click', () => {
+                const select = document.getElementById('attendanceEventSelect');
+                if (!select) return;
+                const eventId = select.value;
+
                 if (window.showToast) window.showToast('Checking attendance logs for auto-issue...', 'info');
+
                 setTimeout(() => {
-                    if (window.showToast) window.showToast('Certificates Auto-Issued to present students.', 'success');
+                    let issueCount = 0;
+                    RegistrationManager.registrations.forEach(r => {
+                        if (r.eventId === eventId && r.status === 'Attended' && !r.certificateIssued) {
+                            r.certificateIssued = true;
+                            issueCount++;
+                        }
+                    });
+
+                    if (issueCount > 0) {
+                        RegistrationManager.saveRegistrations();
+                        if (window.renderAdminCertificates) window.renderAdminCertificates(); // Sync internal view
+                        if (window.showToast) window.showToast(`Success! Auto-Issued ${issueCount} new certificates.`, 'success');
+                    } else {
+                        if (window.showToast) window.showToast('No new certificates to issue for present students.', 'warning');
+                    }
                 }, 1000);
             });
         }
