@@ -172,15 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   });
 
-  // Hero Progress Bar Animation
+  // Animate generic progress bars if they exist
   setTimeout(() => {
-    const heroBar = document.getElementById('heroXpBar');
-    if (heroBar) {
-      // Set to 72.5% as per UI design (1450/2000)
-      heroBar.style.width = '72.5%';
-    }
-
-    // Animate generic progress bars if they exist
     const progressBars = document.querySelectorAll('.progress-bar-fill:not(#heroXpBar)');
     progressBars.forEach(bar => {
       const target = bar.getAttribute('data-progress');
@@ -223,75 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadParticles();
   }
 
-  // Initialize Chart.js Radar
-  const radarCanvas = document.getElementById('studentRadarChart');
-  if (radarCanvas && typeof Chart !== 'undefined') {
-    Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
-    Chart.defaults.font.family = "'Poppins', sans-serif";
-
-    new Chart(radarCanvas, {
-      type: 'radar',
-      data: {
-        labels: ['Participation', 'Leadership', 'Technical Skill', 'Consistency', 'Community'],
-        datasets: [{
-          label: 'Student Skill Profile',
-          data: [85, 65, 90, 75, 50],
-          backgroundColor: 'rgba(168, 85, 247, 0.2)',
-          borderColor: '#a855f7',
-          pointBackgroundColor: '#ec4899',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#ec4899',
-          borderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6
-        }, {
-          label: 'Dept Average',
-          data: [65, 50, 70, 60, 55],
-          backgroundColor: 'rgba(99, 102, 241, 0.1)',
-          borderColor: 'rgba(99, 102, 241, 0.4)',
-          pointBackgroundColor: 'rgba(99, 102, 241, 0.4)',
-          pointBorderColor: 'transparent',
-          borderWidth: 1.5,
-          borderDash: [5, 5],
-          pointRadius: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: { boxWidth: 12, padding: 20 }
-          },
-          tooltip: {
-            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-            titleColor: '#fff',
-            bodyColor: '#cbd5e1',
-            borderColor: 'rgba(255, 255, 255, 0.1)',
-            borderWidth: 1
-          }
-        },
-        scales: {
-          r: {
-            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            pointLabels: {
-              font: { size: 11, family: "'Poppins', sans-serif" },
-              color: '#94a3b8'
-            },
-            ticks: {
-              display: false,
-              stepSize: 20,
-              max: 100,
-              min: 0
-            }
-          }
-        }
-      }
-    });
-  }
+  // Removed legacy static Chart.js radar initialization to prevent Canvas Already In Use conflicts
 });
 
 // Utility to show modals
@@ -889,6 +814,7 @@ const AuthManager = {
 
   init() {
     this.loadUsers();
+    this.currentUser = this.verifyToken(); // Properly hydrate session user state
     this.updateNavbar();
   },
 
@@ -958,12 +884,14 @@ const AuthManager = {
     const token = `${header}.${payload}.${signature}`;
     sessionStorage.setItem('eventSys_token', token);
 
+    this.currentUser = this.verifyToken(); // Load user into memory
     this.updateNavbar();
     return { success: true, role: user.role, id: user.id };
   },
 
   logout() {
     sessionStorage.removeItem('eventSys_token');
+    this.currentUser = null;
     this.updateNavbar();
     window.location.href = 'index.html';
   },
@@ -1192,6 +1120,10 @@ const StudentDashboardManager = {
 
     this.renderHeroProfile();
     this.renderTimeline();
+    this.renderAchievements();
+    this.renderRadarChart();
+    this.renderAIInsights();
+    this.renderLeaderboards();
   },
 
   renderHeroProfile() {
@@ -1326,6 +1258,214 @@ const StudentDashboardManager = {
       }
       timelineContainer.insertAdjacentHTML('beforeend', nodeHtml);
     });
+  },
+
+  renderAchievements() {
+    const grid = document.getElementById('achievementsGrid');
+    if (!grid) return;
+
+    const user = AuthManager.currentUser;
+    const registrations = RegistrationManager.registrations.filter(r => r.studentId === user.id);
+    const attendedCount = registrations.filter(r => r.status === 'Attended').length;
+
+    // Calculate XP to derive level
+    let xp = 0;
+    registrations.forEach(r => {
+      if (r.status === 'Attended') xp += 100;
+      if (r.certificateIssued) xp += 150;
+    });
+    const level = Math.floor(xp / 500) + 1;
+
+    // Badge logic mapped securely to synced data
+    const badges = [
+      { id: 'techStar', title: 'Tech Star', desc: 'Attended 2+ Events', icon: 'fa-code', color1: '#3b82f6', color2: '#1d4ed8', req: attendedCount >= 2 },
+      { id: 'elite', title: 'Elite 5%', desc: 'Reached Level 3+', icon: 'fa-crown', color1: '#f59e0b', color2: '#b45309', req: level >= 3 },
+      { id: 'earlyBird', title: 'Active Learner', desc: 'Registered for any event', icon: 'fa-dove', color1: '#10b981', color2: '#047857', req: registrations.length >= 1 },
+      { id: 'master', title: 'Master Coder', desc: 'Reached Level 5+', icon: 'fa-laptop-code', color1: '#ec4899', color2: '#be185d', req: level >= 5 },
+      { id: 'consistent', title: 'Consistent', desc: 'Attended 5+ Events', icon: 'fa-fire', color1: '#8b5cf6', color2: '#6d28d9', req: attendedCount >= 5 },
+      { id: 'certChampion', title: 'Cert Champion', desc: 'Earned 3+ Certificates', icon: 'fa-certificate', color1: '#06b6d4', color2: '#0369a1', req: registrations.filter(r => r.certificateIssued).length >= 3 }
+    ];
+
+    grid.innerHTML = badges.map(b => {
+      if (b.req) {
+        return `
+          <div class="achievement-badge unlocked tooltip-wrap" data-tooltip="${b.desc}">
+              <div class="badge-icon" style="background: linear-gradient(135deg, ${b.color1}, ${b.color2}); box-shadow: 0 0 20px ${b.color1}66;">
+                  <i class="fa-solid ${b.icon}"></i>
+              </div>
+              <span>${b.title}</span>
+          </div>`;
+      } else {
+        return `
+          <div class="achievement-badge locked tooltip-wrap" data-tooltip="${b.desc}">
+              <div class="badge-icon" style="background: #334155;">
+                  <i class="fa-solid fa-lock" style="opacity: 0.5;"></i>
+              </div>
+              <span>${b.title}</span>
+          </div>`;
+      }
+    }).join('');
+  },
+
+  renderRadarChart() {
+    const canvas = document.getElementById('studentRadarChart');
+    if (!canvas) return;
+
+    const user = AuthManager.currentUser;
+    const registrations = RegistrationManager.registrations.filter(r => r.studentId === user.id);
+    let xp = 0;
+    registrations.forEach(r => {
+      if (r.status === 'Attended') xp += 100;
+      if (r.certificateIssued) xp += 150;
+    });
+    const level = Math.floor(xp / 500) + 1;
+
+    // Simulate stats structurally around synced XP
+    const techSkill = Math.min(65 + (level * 5), 100);
+    const participation = Math.min(50 + (registrations.length * 10), 100);
+    const completion = Math.min(50 + (registrations.filter(r => r.certificateIssued).length * 15), 100);
+
+    new Chart(canvas, {
+      type: 'radar',
+      data: {
+        labels: ['Core Tech', 'Participation', 'Completion Rate', 'Community', 'Consistency'],
+        datasets: [{
+          label: 'Your Stats',
+          data: [techSkill, participation, completion, Math.min(70 + level * 2, 100), Math.min(60 + level * 4, 100)],
+          backgroundColor: 'rgba(6, 182, 212, 0.2)',
+          borderColor: 'rgba(6, 182, 212, 1)',
+          pointBackgroundColor: 'rgba(6, 182, 212, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(6, 182, 212, 1)'
+        }]
+      },
+      options: {
+        scales: {
+          r: {
+            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            pointLabels: { color: '#94a3b8', font: { family: 'Poppins' } },
+            ticks: { display: false, max: 100, min: 0 }
+          }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  },
+
+  renderAIInsights() {
+    const list = document.getElementById('aiInsightsList');
+    if (!list) return;
+
+    const user = AuthManager.currentUser;
+    const registrations = RegistrationManager.registrations.filter(r => r.studentId === user.id);
+    const attendedCount = registrations.filter(r => r.status === 'Attended').length;
+
+    let xp = 0;
+    registrations.forEach(r => {
+      if (r.status === 'Attended') xp += 100;
+      if (r.certificateIssued) xp += 150;
+    });
+    const level = Math.floor(xp / 500) + 1;
+    const xpRemaining = (level * 500) - xp;
+
+    let insightsHTML = '';
+
+    // Insight 1: Participation Tracker
+    if (attendedCount > 0) {
+      insightsHTML += `
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--color-success);">
+            <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-success); margin-bottom: 0.2rem;">
+                <i class="fa-solid fa-fire"></i> Active Participant
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-primary); margin: 0;">You've successfully attended ${attendedCount} event(s). Keep up the great momentum!</p>
+        </div>`;
+    } else {
+      insightsHTML += `
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--color-info);">
+            <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-info); margin-bottom: 0.2rem;">
+                <i class="fa-solid fa-lightbulb"></i> Getting Started
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-primary); margin: 0;">Register for your first event to start earning XP and unlock achievements.</p>
+        </div>`;
+    }
+
+    // Insight 2: Live Goal State
+    insightsHTML += `
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--primary-color);">
+            <div style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color); margin-bottom: 0.2rem;">
+                <i class="fa-solid fa-bullseye"></i> Goal Within Reach
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-primary); margin: 0;">Earn just ${xpRemaining} more XP to reach Level ${level + 1}!</p>
+        </div>`;
+
+    // Insight 3: Dynamic Badges Alert
+    const certsCount = registrations.filter(r => r.certificateIssued).length;
+    if (certsCount < 3) {
+      insightsHTML += `
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--color-warning);">
+            <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-warning); margin-bottom: 0.2rem;">
+                <i class="fa-solid fa-certificate"></i> Certification Goal
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">You need ${3 - certsCount} more certificate(s) to unlock the 'Cert Champion' badge.</p>
+        </div>`;
+    } else {
+      insightsHTML += `
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--secondary-color);">
+            <div style="font-weight: 600; font-size: 0.9rem; color: var(--secondary-color); margin-bottom: 0.2rem;">
+                <i class="fa-solid fa-crown"></i> High Achiever
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">You're a Cert Champion! You rank among the most certified students.</p>
+        </div>`;
+    }
+
+    list.innerHTML = insightsHTML;
+  },
+
+  renderLeaderboards() {
+    const list = document.getElementById('globalLeaderboardList');
+    if (!list) return;
+
+    const user = AuthManager.currentUser;
+    const registrations = RegistrationManager.registrations.filter(r => r.studentId === user.id);
+    let xp = 0;
+    registrations.forEach(r => {
+      if (r.status === 'Attended') xp += 100;
+      if (r.certificateIssued) xp += 150;
+    });
+    const level = Math.floor(xp / 500) + 1;
+
+    // Mixed local XP logic to display user alongside mocked global tier leaders
+    const leaderBoardData = [
+      { name: 'Sam Winchester', level: 20, xp: 3200, avatar: 'Sam+Win', color: '#fbbf24', bg: 'rgba(245,158,11,0.05)', isMe: false, diff: '+120' },
+      { name: 'Emma Stone', level: 18, xp: 2850, avatar: 'Emma+Stone', color: '#e2e8f0', bg: 'rgba(156,163,175,0.05)', isMe: false, diff: '+80' },
+      { name: user.name + ' (You)', level: level, xp: xp, avatar: encodeURIComponent(user.name), color: 'var(--primary-color)', bg: 'rgba(6,182,212,0.1)', isMe: true, diff: '+0' }
+    ];
+
+    leaderBoardData.sort((a, b) => b.xp - a.xp);
+
+    list.innerHTML = leaderBoardData.map((lb, index) => {
+      const rank = index + 1;
+      const borderStyle = lb.isMe ? `border-left: 4px solid ${lb.color}; box-shadow: inset 0 0 20px ${lb.bg};` : `border-left: 4px solid ${lb.color};`;
+      const rankBadgeStyle = lb.isMe ? `background: ${lb.color}; color: white; width: 35px; height: 35px; box-shadow: 0 0 15px ${lb.color};` : `background: linear-gradient(135deg, ${lb.color}, #6b7280); color: white; width: 35px; height: 35px;`;
+
+      return `
+      <div class="leaderboard-row" style="background: ${lb.bg}; ${borderStyle}">
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+              <div class="rank-badge" style="${rankBadgeStyle}">${rank}</div>
+              <img src="https://ui-avatars.com/api/?name=${lb.avatar}&background=${lb.isMe ? '06b6d4' : '000'}&color=fff" style="width: 45px; height: 45px; border-radius: 50%; ${lb.isMe ? 'border: 2px solid ' + lb.color : ''}">
+              <div>
+                  <strong style="font-size: 1.1rem; color: ${lb.color};">${lb.name}</strong>
+                  <div style="font-size: 0.8rem; color: var(--text-secondary);">Level ${lb.level}</div>
+              </div>
+          </div>
+          <div style="text-align: right;">
+              <span style="font-weight: 800; color: ${lb.color}; font-size: 1.2rem;">${lb.xp} XP</span>
+              <div style="font-size: 0.75rem; color: var(--color-success);"><i class="fa-solid fa-arrow-up"></i> ${lb.diff} this week</div>
+          </div>
+      </div>`;
+    }).join('');
   }
 };
 

@@ -140,62 +140,9 @@
                     </h2>
 
                     <div class="glass" style="padding: 2rem; border-radius: var(--radius-lg);">
-                        <div
+                        <div id="achievementsGrid"
                             style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1.5rem;">
-
-                            <!-- Badge 1: Unlocked -->
-                            <div class="achievement-badge unlocked tooltip-wrap" data-tooltip="Attended 5 Tech Events">
-                                <div class="badge-icon"
-                                    style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 0 20px rgba(59,130,246,0.4);">
-                                    <i class="fa-solid fa-code"></i>
-                                </div>
-                                <span>Tech Star</span>
-                            </div>
-
-                            <!-- Badge 2: Unlocked -->
-                            <div class="achievement-badge unlocked tooltip-wrap" data-tooltip="Reached Top 5% Globally">
-                                <div class="badge-icon"
-                                    style="background: linear-gradient(135deg, #f59e0b, #b45309); box-shadow: 0 0 20px rgba(245,158,11,0.4);">
-                                    <i class="fa-solid fa-crown"></i>
-                                </div>
-                                <span>Elite 5%</span>
-                            </div>
-
-                            <!-- Badge 3: Unlocked -->
-                            <div class="achievement-badge unlocked tooltip-wrap"
-                                data-tooltip="First to register for an event">
-                                <div class="badge-icon"
-                                    style="background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 0 20px rgba(16,185,129,0.4);">
-                                    <i class="fa-solid fa-dove"></i>
-                                </div>
-                                <span>Early Bird</span>
-                            </div>
-
-                            <!-- Badge 4: Locked -->
-                            <div class="achievement-badge locked tooltip-wrap" data-tooltip="Complete a 24hr Hackathon">
-                                <div class="badge-icon" style="background: #334155;">
-                                    <i class="fa-solid fa-lock" style="opacity: 0.5;"></i>
-                                </div>
-                                <span>Hackathon</span>
-                            </div>
-
-                            <!-- Badge 5: Locked -->
-                            <div class="achievement-badge locked tooltip-wrap" data-tooltip="Attend 3 Cultural Events">
-                                <div class="badge-icon" style="background: #334155;">
-                                    <i class="fa-solid fa-lock" style="opacity: 0.5;"></i>
-                                </div>
-                                <span>Culture Vulture</span>
-                            </div>
-
-                            <!-- Badge 6: Locked -->
-                            <div class="achievement-badge locked tooltip-wrap"
-                                data-tooltip="Maintained active streak for 3 months">
-                                <div class="badge-icon" style="background: #334155;">
-                                    <i class="fa-solid fa-lock" style="opacity: 0.5;"></i>
-                                </div>
-                                <span>Consistent</span>
-                            </div>
-
+                            <!-- Achievements injected dynamically -->
                         </div>
                     </div>
                 </div>
@@ -240,41 +187,8 @@
 
                     <div class="glass"
                         style="border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(168,85,247,0.3); background: linear-gradient(180deg, rgba(168,85,247,0.05) 0%, var(--admin-surface) 100%);">
-                        <div style="display: flex; flex-direction: column; gap: 1rem;">
-
-                            <!-- Insight 1 -->
-                            <div
-                                style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--color-success);">
-                                <div
-                                    style="font-weight: 600; font-size: 0.9rem; color: var(--color-success); margin-bottom: 0.2rem;">
-                                    <i class="fa-solid fa-fire"></i> Hot Streak
-                                </div>
-                                <p style="font-size: 0.85rem; color: var(--text-primary); margin: 0;">You've attended
-                                    events for 3 consecutive months. Great consistency!</p>
-                            </div>
-
-                            <!-- Insight 2 -->
-                            <div
-                                style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--primary-color);">
-                                <div
-                                    style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color); margin-bottom: 0.2rem;">
-                                    <i class="fa-solid fa-bullseye"></i> Goal Within Reach
-                                </div>
-                                <p style="font-size: 0.85rem; color: var(--text-primary); margin: 0;">Attend just 1 more
-                                    Tech event to unlock the "Master Coder" badge.</p>
-                            </div>
-
-                            <!-- Insight 3 -->
-                            <div
-                                style="padding: 1rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); border-left: 3px solid var(--color-warning);">
-                                <div
-                                    style="font-weight: 600; font-size: 0.9rem; color: var(--color-warning); margin-bottom: 0.2rem;">
-                                    <i class="fa-solid fa-trophy"></i> Rival Activity
-                                </div>
-                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Sarah Jen is
-                                    catching up, only 40 XP behind you in the leaderboard!</p>
-                            </div>
-
+                        <div id="aiInsightsList" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- AI Insights injected dynamically -->
                         </div>
                     </div>
                 </div>
@@ -291,70 +205,9 @@
                 <span class="badge badge-tech">Department: CSE</span>
             </h2>
 
-            <div class="glass" style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem;">
-
-                <div class="leaderboard-row" style="background: rgba(245,158,11,0.05); border-left: 4px solid #fbbf24;">
-                    <div style="display: flex; align-items: center; gap: 1.5rem;">
-                        <div class="rank-badge"
-                            style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; width: 35px; height: 35px;">
-                            1</div>
-                        <img src="https://ui-avatars.com/api/?name=Sam+Win&background=000&color=fff"
-                            style="width: 45px; height: 45px; border-radius: 50%;">
-                        <div>
-                            <strong style="font-size: 1.1rem; color: #fbbf24;">Sam Winchester</strong>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Senior (Level 20)</div>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <span style="font-weight: 800; color: #fbbf24; font-size: 1.2rem;">3,200 XP</span>
-                        <div style="font-size: 0.75rem; color: var(--color-success);"><i
-                                class="fa-solid fa-arrow-up"></i> 120 this week</div>
-                    </div>
-                </div>
-
-                <div class="leaderboard-row"
-                    style="background: rgba(156,163,175,0.05); border-left: 4px solid #9ca3af;">
-                    <div style="display: flex; align-items: center; gap: 1.5rem;">
-                        <div class="rank-badge"
-                            style="background: linear-gradient(135deg, #9ca3af, #6b7280); color: white; width: 35px; height: 35px;">
-                            2</div>
-                        <img src="https://ui-avatars.com/api/?name=Emma+Stone&background=000&color=fff"
-                            style="width: 45px; height: 45px; border-radius: 50%;">
-                        <div>
-                            <strong style="font-size: 1.1rem; color: #e2e8f0;">Emma Stone</strong>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary);">Sophomore (Level 18)</div>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <span style="font-weight: 800; color: #e2e8f0; font-size: 1.2rem;">2,850 XP</span>
-                        <div style="font-size: 0.75rem; color: var(--color-success);"><i
-                                class="fa-solid fa-arrow-up"></i> 80 this week</div>
-                    </div>
-                </div>
-
-                <div class="leaderboard-row"
-                    style="background: rgba(99,102,241,0.1); border-left: 4px solid var(--primary-color); box-shadow: inset 0 0 20px rgba(99,102,241,0.1);">
-                    <div style="display: flex; align-items: center; gap: 1.5rem;">
-                        <div class="rank-badge"
-                            style="background: var(--primary-color); color: white; width: 35px; height: 35px; box-shadow: 0 0 15px rgba(99,102,241,0.5);">
-                            12</div>
-                        <img src="https://ui-avatars.com/api/?name=Student&background=6366f1&color=fff"
-                            style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color);"
-                            id="studentLeaderboardAvatar">
-                        <div>
-                            <strong style="font-size: 1.1rem; color: var(--primary-color);"
-                                id="studentLeaderboardName">Student Name (You)</strong>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary);" id="studentLeaderboardLevel">
-                                Freshman (Level 1)</div>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <span style="font-weight: 800; color: var(--primary-color); font-size: 1.2rem;">1,450 XP</span>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary);"><i class="fa-solid fa-minus"></i>
-                            0 this week</div>
-                    </div>
-                </div>
-
+            <div class="glass" id="globalLeaderboardList"
+                style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem;">
+                <!-- Leaderboards injected dynamically -->
             </div>
         </div>
 
